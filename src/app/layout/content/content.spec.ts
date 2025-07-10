@@ -1,0 +1,33 @@
+import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { Content } from "./content";
+
+describe(`${Content.name}`, () => {
+  let component: Content;
+  let fixture: ComponentFixture<Content>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [Content],
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(Content);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it("should create the component", () => {
+    expect(component).toBeTruthy();
+  });
+
+  it('should render a main element with class "app-content"', () => {
+    const compiled = fixture.nativeElement as HTMLElement;
+    const main = compiled.querySelector("main.app-content");
+    expect(main).toBeTruthy();
+  });
+
+  it("should contain a router-outlet inside main", () => {
+    const compiled = fixture.nativeElement as HTMLElement;
+    const main = compiled.querySelector("main.app-content");
+    expect(main?.querySelector("router-outlet")).toBeTruthy();
+  });
+});

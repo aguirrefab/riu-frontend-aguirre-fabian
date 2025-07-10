@@ -1,10 +1,11 @@
-import { Component } from "@angular/core";
+import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { RouterOutlet } from "@angular/router";
 
 @Component({
   selector: "app-content",
   standalone: true,
   imports: [RouterOutlet],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <main class="app-content">
       <router-outlet></router-outlet>
@@ -19,4 +20,4 @@ import { RouterOutlet } from "@angular/router";
     `,
   ],
 })
-export class ContentComponent {}
+export class Content {}
