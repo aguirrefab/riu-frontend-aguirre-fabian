@@ -64,6 +64,15 @@
                 >
                   <mat-icon>edit</mat-icon>
                 </button>
+                <button
+                  matMiniFab
+                  color="warn"
+                  aria-label="Delete Hero"
+                  matTooltip="delete hero"
+                  (click)="deleteHero(hero); $event.stopPropagation()"
+                >
+                  <mat-icon>delete</mat-icon>
+                </button>
               </div>
             </td>
           </ng-container>

@@ -43,4 +43,14 @@ export class HeroContextService {
       console.log("Updated heroes list:", this._heroesSignal());
     }
   }
+
+  deleteHero(heroId: number): void {
+    const heroes = this._heroesSignal();
+    const filteredHeroes = heroes.filter((hero) => hero.id !== heroId);
+    if (filteredHeroes.length !== heroes.length) {
+      this._heroesSignal.set(filteredHeroes);
+      console.log("Hero deleted:", heroId);
+      console.log("Updated heroes list:", this._heroesSignal());
+    }
+  }
 }
