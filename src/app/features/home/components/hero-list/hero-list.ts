@@ -4,6 +4,7 @@ import {
   Component,
   computed,
   inject,
+  OnInit,
   signal,
 } from "@angular/core";
 import { FormControl, ReactiveFormsModule } from "@angular/forms";
@@ -12,13 +13,14 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
 import { MatPaginatorModule, PageEvent } from "@angular/material/paginator";
-import { MatProgressBarModule } from "@angular/material/progress-bar";
+import { MatProgressBar } from "@angular/material/progress-bar";
 import { MatTableModule } from "@angular/material/table";
+import { MatTooltip } from "@angular/material/tooltip";
 import { RouterModule } from "@angular/router";
+import { HeroContextService } from "@services/hero-context/hero-context.service";
+import { HeroDialogService } from "@services/hero-dialog/hero-dialog-service";
+import { Hero } from "@shared/models/hero.model";
 import { debounceTime, distinctUntilChanged } from "rxjs";
-import { HeroService } from "../../../../core/services/hero/hero.service";
-import { Hero } from "../../../../shared/models/hero.model";
-import { HeroDialogService } from "../../services/hero-dialog-service";
 
 @Component({
   selector: "app-hero-list",
@@ -29,27 +31,42 @@ import { HeroDialogService } from "../../services/hero-dialog-service";
     MatFormFieldModule,
     MatTableModule,
     MatPaginatorModule,
-    MatProgressBarModule,
+    MatProgressBar,
     ReactiveFormsModule,
     RouterModule,
     PercentPipe,
+    MatTooltip,
   ],
-  providers: [HeroDialogService],
+  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: "./hero-list.html",
   styleUrl: "./hero-list.scss",
 })
-export class HeroList {
+export class HeroList implements OnInit {
   displayedColumns: string[] = ["name", "alias", "powerLevel", "actions"];
   searchControl = new FormControl("");
-  totalHeroes = signal(0);
   pageSize = 10;
   pageIndex = 0;
-  heroes = signal<Hero[]>([]);
-  filteredHeroes = signal<Hero[]>([]);
 
-  private heroService = inject(HeroService);
+  private heroService = inject(HeroContextService);
   private dialog = inject(HeroDialogService);
+
+  private searchTerm = signal("");
+
+  filteredHeroes = computed(() => {
+    const heroes = this.heroService.getHeroes();
+    const term = this.searchTerm().toLowerCase();
+
+    if (!term) return heroes;
+
+    return heroes.filter(
+      (hero) =>
+        hero.name.toLowerCase().includes(term) ||
+        (hero.alias && hero.alias.toLowerCase().includes(term))
+    );
+  });
+
+  totalHeroes = computed(() => this.filteredHeroes().length);
 
   pagedHeroes = computed(() => {
     const startIndex = this.pageIndex * this.pageSize;
@@ -57,23 +74,12 @@ export class HeroList {
   });
 
   ngOnInit(): void {
-    this.loadHeroes();
-
     this.searchControl.valueChanges
       .pipe(debounceTime(300), distinctUntilChanged())
-      .subscribe((term) => {
-        const heroes = this.heroService.searchHeroes(term || "");
-        this.filteredHeroes.set(heroes);
-        this.totalHeroes.set(heroes.length);
+      .subscribe((value) => {
+        this.searchTerm.set(value || "");
         this.pageIndex = 0;
       });
-  }
-
-  private loadHeroes(): void {
-    const heroes = this.heroService.getHeroes() || [];
-    this.heroes.set(heroes);
-    this.filteredHeroes.set([...heroes]);
-    this.totalHeroes.set(heroes.length);
   }
 
   onPageChange(event: PageEvent): void {
@@ -82,7 +88,7 @@ export class HeroList {
   }
 
   openHeroDetail(hero: Hero): void {
-    this.dialog.openHeroDialogDetail({
+    this.dialog.openDetail({
       hero,
       title: `Hero Details: ${hero.name}`,
     });
@@ -92,5 +98,12 @@ export class HeroList {
     if (level >= 80) return "warn";
     if (level >= 50) return "accent";
     return "primary";
+  }
+
+  editHero(hero: Hero): void {
+    this.dialog.openEdit({
+      hero,
+      title: `Edit Hero: ${hero.name}`,
+    });
   }
 }

@@ -14,7 +14,7 @@
       </div>
 
       <div class="table-container">
-        <table mat-table [dataSource]="pagedHeroes()" class="mat-elevation-z1">
+        <table mat-table [dataSource]="pagedHeroes()">
           <!-- Name Column -->
           <ng-container matColumnDef="name">
             <th mat-header-cell *matHeaderCellDef>Name</th>
@@ -51,9 +51,18 @@
                 <button
                   matMiniFab
                   aria-label="View Hero"
-                  (click)="openHeroDetail(hero)"
+                  matTooltip="view detail"
+                  (click)="openHeroDetail(hero); $event.stopPropagation()"
                 >
                   <mat-icon>remove_red_eye</mat-icon>
+                </button>
+                <button
+                  matMiniFab
+                  aria-label="Edit Hero"
+                  matTooltip="edit hero"
+                  (click)="editHero(hero); $event.stopPropagation()"
+                >
+                  <mat-icon>edit</mat-icon>
                 </button>
               </div>
             </td>

@@ -1,17 +1,20 @@
-<div class="hero-dialog-detail">
+<div class="hero-dialog">
   <h2 mat-dialog-title>{{ data.title }}</h2>
   <mat-dialog-content>
     <mat-card>
-      <mat-card-content>
-        <p><strong>Alias:</strong> {{ data.hero.alias || "Undefined" }}</p>
-        <div class="power-level">
-          <p><strong>Power level:</strong></p>
+      <mat-card-content class="hero-card-detail">
+        <p class="label-text">Alias:</p>
+        <p class="value-text">
+          {{ data.hero.alias || "Undefined" }}
+        </p>
+        <div>
+          <p class="label-text">Power level:</p>
           <mat-progress-bar
             mode="determinate"
             [value]="data.hero.powerLevel || 0"
           >
           </mat-progress-bar>
-          <p>
+          <p class="value-text">
             {{ (data.hero.powerLevel ?? 0) / 100 | percent }}
           </p>
         </div>
@@ -19,6 +22,13 @@
     </mat-card>
   </mat-dialog-content>
   <mat-dialog-actions align="end">
-    <button matButton="filled" mat-dialog-close>Close</button>
+    <button
+      matButton="filled"
+      color="primary"
+      (click)="closeDialog()"
+      aria-label="Close modal"
+    >
+      Close
+    </button>
   </mat-dialog-actions>
 </div>
