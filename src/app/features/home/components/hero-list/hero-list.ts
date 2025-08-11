@@ -106,4 +106,17 @@ export class HeroList implements OnInit {
       title: `Edit Hero: ${hero.name}`,
     });
   }
+
+  deleteHero(hero: Hero): void {
+    const dialogRef = this.dialog.openDelete({
+      hero,
+      title: `Delete Hero: ${hero.name}`,
+    });
+
+    dialogRef.afterClosed().subscribe((confirmed) => {
+      if (confirmed) {
+        this.heroService.deleteHero(hero.id);
+      }
+    });
+  }
 }
