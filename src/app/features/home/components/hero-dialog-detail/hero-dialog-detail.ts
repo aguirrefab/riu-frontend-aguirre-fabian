@@ -8,6 +8,7 @@ import { HeroDialogService } from "@services/hero-dialog/hero-dialog-service";
 import { HeroDialogData } from "@shared/models/hero-dialog.model";
 
 @Component({
+  standalone: true,
   selector: "app-hero-dialog-detail",
   imports: [
     MatDialogModule,
