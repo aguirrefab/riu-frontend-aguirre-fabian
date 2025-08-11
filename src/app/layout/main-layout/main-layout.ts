@@ -16,10 +16,9 @@ import { Header } from "../header/header";
   styles: [
     `
       :host {
-        display: block;
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
+        display: grid;
+        min-height: 100dvh;
+        grid-template-rows: auto 1fr auto;
       }
     `,
   ],
