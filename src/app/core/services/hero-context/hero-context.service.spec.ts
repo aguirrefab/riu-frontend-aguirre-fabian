@@ -1,10 +1,10 @@
-import { HeroService } from "./hero.service";
+import { HeroContextService } from "./hero-context.service";
 
-describe(`${HeroService.name}`, () => {
-  let service: HeroService;
+describe(`${HeroContextService.name}`, () => {
+  let service: HeroContextService;
 
   beforeEach(() => {
-    service = new HeroService();
+    service = new HeroContextService();
   });
 
   describe("searchHeroes", () => {
@@ -50,7 +50,6 @@ describe(`${HeroService.name}`, () => {
     });
 
     it("should return multiple heroes if multiple match", () => {
-      // Both "CLARK KENT" and "BRUCE WAYNE" have "A" in their names/aliases
       const result = service.searchHeroes("a");
       expect(result.length).toBeGreaterThan(1);
       expect(result.some((hero) => hero.name === "CLARK KENT")).toBeTrue();

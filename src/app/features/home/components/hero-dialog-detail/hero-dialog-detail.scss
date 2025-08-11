@@ -1,13 +1,17 @@
-.hero-dialog-detail {
+.hero-dialog {
   padding: 20px;
+
+  &__title {
+    color: black;
+  }
 }
 
-.power-level {
-  margin-top: 16px;
-}
+.hero-card-detail {
+  .label-text {
+    font-weight: bold;
+  }
 
-mat-progress-bar {
-  margin: 8px 0;
-  height: 10px;
-  border-radius: 4px;
+  .value-text {
+    margin-bottom: 16px;
+  }
 }

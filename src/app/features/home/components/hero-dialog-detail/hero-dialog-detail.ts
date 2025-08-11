@@ -1,18 +1,19 @@
 import { PercentPipe } from "@angular/common";
-import { ChangeDetectionStrategy, Component, Inject } from "@angular/core";
-import { MatButtonModule } from "@angular/material/button";
+import { ChangeDetectionStrategy, Component, inject } from "@angular/core";
+import { MatButton } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
 import { MAT_DIALOG_DATA, MatDialogModule } from "@angular/material/dialog";
-import { MatProgressBarModule } from "@angular/material/progress-bar";
-import { HeroDialogData } from "../../../../shared/models/hero-dialog.model";
+import { MatProgressBar } from "@angular/material/progress-bar";
+import { HeroDialogService } from "@services/hero-dialog/hero-dialog-service";
+import { HeroDialogData } from "@shared/models/hero-dialog.model";
 
 @Component({
   selector: "app-hero-dialog-detail",
   imports: [
     MatDialogModule,
-    MatButtonModule,
+    MatButton,
     MatCardModule,
-    MatProgressBarModule,
+    MatProgressBar,
     PercentPipe,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -20,5 +21,10 @@ import { HeroDialogData } from "../../../../shared/models/hero-dialog.model";
   styleUrl: "./hero-dialog-detail.scss",
 })
 export class HeroDialogDetail {
-  constructor(@Inject(MAT_DIALOG_DATA) public data: HeroDialogData) {}
+  readonly data = inject<HeroDialogData>(MAT_DIALOG_DATA);
+  private readonly heroDialog = inject(HeroDialogService);
+
+  closeDialog(): void {
+    this.heroDialog.close();
+  }
 }

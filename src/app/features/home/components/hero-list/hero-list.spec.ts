@@ -16,14 +16,14 @@ import { MatProgressBarModule } from "@angular/material/progress-bar";
 import { MatTableModule } from "@angular/material/table";
 import { By } from "@angular/platform-browser";
 import { RouterModule } from "@angular/router";
-import { HeroService } from "../../../../core/services/hero/hero.service";
-import { Hero } from "../../../../shared/models/hero.model";
+import { HeroContextService } from "@services/hero-context/hero-context.service";
+import { Hero } from "@shared/models/hero.model";
 import { HeroList } from "./hero-list";
 
 describe(`${HeroList.name}`, () => {
   let component: HeroList;
   let fixture: ComponentFixture<HeroList>;
-  let heroServiceSpy: jasmine.SpyObj<HeroService>;
+  let heroServiceSpy: jasmine.SpyObj<HeroContextService>;
   let dialogSpy: jasmine.SpyObj<MatDialog>;
 
   const HEROES: Hero[] = [
@@ -51,7 +51,7 @@ describe(`${HeroList.name}`, () => {
         RouterModule,
       ],
       providers: [
-        { provide: HeroService, useValue: heroServiceSpy },
+        { provide: HeroContextService, useValue: heroServiceSpy },
         PercentPipe,
       ],
     }).compileComponents();

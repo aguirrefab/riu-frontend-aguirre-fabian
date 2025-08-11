@@ -4,6 +4,7 @@ import {
   Component,
   computed,
   inject,
+  OnInit,
   signal,
 } from "@angular/core";
 import { FormControl, ReactiveFormsModule } from "@angular/forms";
@@ -12,13 +13,14 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
 import { MatPaginatorModule, PageEvent } from "@angular/material/paginator";
-import { MatProgressBarModule } from "@angular/material/progress-bar";
+import { MatProgressBar } from "@angular/material/progress-bar";
 import { MatTableModule } from "@angular/material/table";
+import { MatTooltip } from "@angular/material/tooltip";
 import { RouterModule } from "@angular/router";
+import { HeroContextService } from "@services/hero-context/hero-context.service";
+import { HeroDialogService } from "@services/hero-dialog/hero-dialog-service";
+import { Hero } from "@shared/models/hero.model";
 import { debounceTime, distinctUntilChanged } from "rxjs";
-import { HeroService } from "../../../../core/services/hero/hero.service";
-import { Hero } from "../../../../shared/models/hero.model";
-import { HeroDialogService } from "../../services/hero-dialog-service";
 
 @Component({
   selector: "app-hero-list",
@@ -29,17 +31,18 @@ import { HeroDialogService } from "../../services/hero-dialog-service";
     MatFormFieldModule,
     MatTableModule,
     MatPaginatorModule,
-    MatProgressBarModule,
+    MatProgressBar,
     ReactiveFormsModule,
     RouterModule,
     PercentPipe,
+    MatTooltip,
   ],
   providers: [HeroDialogService],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: "./hero-list.html",
   styleUrl: "./hero-list.scss",
 })
-export class HeroList {
+export class HeroList implements OnInit {
   displayedColumns: string[] = ["name", "alias", "powerLevel", "actions"];
   searchControl = new FormControl("");
   totalHeroes = signal(0);
@@ -48,7 +51,7 @@ export class HeroList {
   heroes = signal<Hero[]>([]);
   filteredHeroes = signal<Hero[]>([]);
 
-  private heroService = inject(HeroService);
+  private heroService = inject(HeroContextService);
   private dialog = inject(HeroDialogService);
 
   pagedHeroes = computed(() => {
@@ -82,7 +85,7 @@ export class HeroList {
   }
 
   openHeroDetail(hero: Hero): void {
-    this.dialog.openHeroDialogDetail({
+    this.dialog.open({
       hero,
       title: `Hero Details: ${hero.name}`,
     });

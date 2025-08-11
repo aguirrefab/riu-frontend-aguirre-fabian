@@ -4,7 +4,7 @@ import { Hero } from "../../../shared/models/hero.model";
 @Injectable({
   providedIn: "root",
 })
-export class HeroService {
+export class HeroContextService {
   private _heroesSignal = signal<Hero[]>([
     { id: 1, name: "CLARK KENT", alias: "Superman", powerLevel: 100 },
     { id: 2, name: "BRUCE WAYNE", alias: "Batman", powerLevel: 30 },
