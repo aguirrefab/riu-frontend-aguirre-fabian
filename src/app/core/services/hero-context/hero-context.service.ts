@@ -14,7 +14,7 @@ export class HeroContextService {
   heroes = this._heroesSignal.asReadonly();
 
   getHeroes(): Hero[] {
-    return this._heroesSignal();
+    return this.heroes();
   }
 
   getHeroById(id: number): Hero | undefined {
@@ -31,5 +31,16 @@ export class HeroContextService {
         hero.name.toLowerCase().includes(searchTerm) ||
         (hero.alias && hero.alias.toLowerCase().includes(searchTerm))
     );
+  }
+
+  updateHero(hero: Hero): void {
+    const heroes = this._heroesSignal();
+    const index = heroes.findIndex((h) => h.id === hero.id);
+    if (index !== -1) {
+      heroes[index] = hero;
+      this._heroesSignal.set([...heroes]);
+      console.log("Hero updated:", hero);
+      console.log("Updated heroes list:", this._heroesSignal());
+    }
   }
 }

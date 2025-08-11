@@ -52,9 +52,17 @@
                   matMiniFab
                   aria-label="View Hero"
                   matTooltip="view detail"
-                  (click)="openHeroDetail(hero)"
+                  (click)="openHeroDetail(hero); $event.stopPropagation()"
                 >
                   <mat-icon>remove_red_eye</mat-icon>
+                </button>
+                <button
+                  matMiniFab
+                  aria-label="Edit Hero"
+                  matTooltip="edit hero"
+                  (click)="editHero(hero); $event.stopPropagation()"
+                >
+                  <mat-icon>edit</mat-icon>
                 </button>
               </div>
             </td>

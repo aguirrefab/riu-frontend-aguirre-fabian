@@ -37,7 +37,7 @@ import { debounceTime, distinctUntilChanged } from "rxjs";
     PercentPipe,
     MatTooltip,
   ],
-  providers: [HeroDialogService],
+  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: "./hero-list.html",
   styleUrl: "./hero-list.scss",
@@ -45,14 +45,28 @@ import { debounceTime, distinctUntilChanged } from "rxjs";
 export class HeroList implements OnInit {
   displayedColumns: string[] = ["name", "alias", "powerLevel", "actions"];
   searchControl = new FormControl("");
-  totalHeroes = signal(0);
   pageSize = 10;
   pageIndex = 0;
-  heroes = signal<Hero[]>([]);
-  filteredHeroes = signal<Hero[]>([]);
 
   private heroService = inject(HeroContextService);
   private dialog = inject(HeroDialogService);
+
+  private searchTerm = signal("");
+
+  filteredHeroes = computed(() => {
+    const heroes = this.heroService.getHeroes();
+    const term = this.searchTerm().toLowerCase();
+
+    if (!term) return heroes;
+
+    return heroes.filter(
+      (hero) =>
+        hero.name.toLowerCase().includes(term) ||
+        (hero.alias && hero.alias.toLowerCase().includes(term))
+    );
+  });
+
+  totalHeroes = computed(() => this.filteredHeroes().length);
 
   pagedHeroes = computed(() => {
     const startIndex = this.pageIndex * this.pageSize;
@@ -60,23 +74,12 @@ export class HeroList implements OnInit {
   });
 
   ngOnInit(): void {
-    this.loadHeroes();
-
     this.searchControl.valueChanges
       .pipe(debounceTime(300), distinctUntilChanged())
-      .subscribe((term) => {
-        const heroes = this.heroService.searchHeroes(term || "");
-        this.filteredHeroes.set(heroes);
-        this.totalHeroes.set(heroes.length);
+      .subscribe((value) => {
+        this.searchTerm.set(value || "");
         this.pageIndex = 0;
       });
-  }
-
-  private loadHeroes(): void {
-    const heroes = this.heroService.getHeroes() || [];
-    this.heroes.set(heroes);
-    this.filteredHeroes.set([...heroes]);
-    this.totalHeroes.set(heroes.length);
   }
 
   onPageChange(event: PageEvent): void {
@@ -85,7 +88,7 @@ export class HeroList implements OnInit {
   }
 
   openHeroDetail(hero: Hero): void {
-    this.dialog.open({
+    this.dialog.openDetail({
       hero,
       title: `Hero Details: ${hero.name}`,
     });
@@ -95,5 +98,12 @@ export class HeroList implements OnInit {
     if (level >= 80) return "warn";
     if (level >= 50) return "accent";
     return "primary";
+  }
+
+  editHero(hero: Hero): void {
+    this.dialog.openEdit({
+      hero,
+      title: `Edit Hero: ${hero.name}`,
+    });
   }
 }
