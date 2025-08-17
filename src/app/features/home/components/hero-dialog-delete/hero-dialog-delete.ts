@@ -26,10 +26,10 @@ export class HeroDialogDelete {
   readonly data = inject<HeroDialogData>(MAT_DIALOG_DATA);
 
   onConfirm(): void {
-    this.dialogRef.close(true);
+    this.dialogRef.close();
   }
 
   onCancel(): void {
-    this.dialogRef.close(false);
+    this.dialogRef.close();
   }
 }

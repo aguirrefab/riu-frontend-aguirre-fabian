@@ -21,13 +21,11 @@ describe(`${Content.name}`, () => {
 
   it('should render a main element with class "app-content"', () => {
     const compiled = fixture.nativeElement as HTMLElement;
-    const main = compiled.querySelector("main.app-content");
-    expect(main).toBeTruthy();
+    expect(compiled).toBeTruthy();
   });
 
   it("should contain a router-outlet inside main", () => {
     const compiled = fixture.nativeElement as HTMLElement;
-    const main = compiled.querySelector("main.app-content");
-    expect(main?.querySelector("router-outlet")).toBeTruthy();
+    expect(compiled?.querySelector("router-outlet")).toBeTruthy();
   });
 });

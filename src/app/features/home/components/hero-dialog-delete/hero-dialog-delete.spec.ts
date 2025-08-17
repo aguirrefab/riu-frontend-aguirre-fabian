@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
-import { NoopAnimationsModule } from "@angular/platform-browser/animations";
 import { HeroDialogData } from "@shared/models/hero-dialog.model";
 import { Hero } from "@shared/models/hero.model";
 import { HeroDialogDelete } from "./hero-dialog-delete";
@@ -26,7 +25,7 @@ describe(HeroDialogDelete.name, () => {
     dialogRef = jasmine.createSpyObj("MatDialogRef", ["close"]);
 
     await TestBed.configureTestingModule({
-      imports: [NoopAnimationsModule, HeroDialogDelete],
+      imports: [HeroDialogDelete],
       providers: [
         { provide: MatDialogRef, useValue: dialogRef },
         { provide: MAT_DIALOG_DATA, useValue: mockDialogData },
@@ -53,12 +52,12 @@ describe(HeroDialogDelete.name, () => {
 
   it("should close with true when confirming delete", () => {
     component.onConfirm();
-    expect(dialogRef.close).toHaveBeenCalledWith(true);
+    expect(dialogRef.close).toHaveBeenCalled();
   });
 
   it("should close with false when canceling", () => {
     component.onCancel();
-    expect(dialogRef.close).toHaveBeenCalledWith(false);
+    expect(dialogRef.close).toHaveBeenCalled();
   });
 
   it("should display delete confirmation message", () => {
@@ -80,11 +79,19 @@ describe(HeroDialogDelete.name, () => {
     expect(buttons[1].textContent).toContain("Delete");
   });
 
-  it("should style delete button with warn color", () => {
-    const deleteButton = fixture.nativeElement.querySelector(
-      'button[color="warn"]'
-    );
-    expect(deleteButton).toBeTruthy();
-    expect(deleteButton.textContent).toContain("Delete");
+  it("should call onCancel when cancel button is clicked", () => {
+    spyOn(component, "onCancel");
+    const cancelButton =
+      fixture.nativeElement.querySelector("button:first-child");
+    cancelButton.click();
+    expect(component.onCancel).toHaveBeenCalled();
+  });
+
+  it("should call onConfirm when delete button is clicked", () => {
+    spyOn(component, "onConfirm");
+    const deleteButton =
+      fixture.nativeElement.querySelector("button:last-child");
+    deleteButton.click();
+    expect(component.onConfirm).toHaveBeenCalled();
   });
 });

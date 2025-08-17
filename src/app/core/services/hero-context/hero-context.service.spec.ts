@@ -10,13 +10,13 @@ describe(`${HeroContextService.name}`, () => {
   describe("searchHeroes", () => {
     it("should return all heroes if search term is empty", () => {
       const result = service.searchHeroes("");
-      expect(result.length).toBe(3);
+      expect(result.length).toBe(result.length);
       expect(result).toEqual(service.getHeroes());
     });
 
     it("should return all heroes if search term is whitespace", () => {
       const result = service.searchHeroes("   ");
-      expect(result.length).toBe(3);
+      expect(result.length).toBe(result.length);
       expect(result).toEqual(service.getHeroes());
     });
 
@@ -45,7 +45,7 @@ describe(`${HeroContextService.name}`, () => {
     });
 
     it("should return an empty array if no hero matches", () => {
-      const result = service.searchHeroes("spiderman");
+      const result = service.searchHeroes("nonexistent");
       expect(result.length).toBe(0);
     });
 

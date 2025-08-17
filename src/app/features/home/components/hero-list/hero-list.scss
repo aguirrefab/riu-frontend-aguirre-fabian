@@ -2,19 +2,15 @@
   padding: 20px;
 }
 
-.search-container {
+.header-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  padding: 20px;
 }
 
 .search-field {
   width: 300px;
-}
-
-.table-container {
-  overflow-x: auto;
 }
 
 .mat-mdc-table {
@@ -31,14 +27,19 @@
 
 .actions-cell {
   display: flex;
-  gap: 8px;
+  gap: 12px;
   justify-content: flex-end;
 
   button {
-    background-color: transparent;
     border: none;
     cursor: pointer;
   }
+}
+
+.list-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .power-level {

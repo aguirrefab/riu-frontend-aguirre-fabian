@@ -49,17 +49,20 @@ describe(HeroDialogDetail.name, () => {
 
   it("should create the component", () => {
     expect(component).toBeTruthy();
+    expect(
+      fixture.nativeElement.querySelector("mat-progress-bar")
+    ).toBeTruthy();
   });
 
   it("should inject MAT_DIALOG_DATA correctly", () => {
     expect(component.data).toEqual(mockData);
+    expect(component.data.hero.name).toContain(mockData.hero.name);
+    expect(component.data.hero.alias).toContain(mockData.hero.alias);
   });
 
-  it("should display hero details correctly in the template", () => {
-    const compiled = fixture.nativeElement;
-    expect(compiled.textContent).toContain(mockData.hero.name);
-    expect(compiled.textContent).toContain(mockData.hero.alias);
-    expect(compiled.querySelector("mat-progress-bar")).toBeTruthy();
+  it("should call close method of HeroDialogService when closeDialog is called", () => {
+    component.closeDialog();
+    expect(heroDialogService.close).toHaveBeenCalled();
   });
 
   it("should close dialog when closeDialog is called", () => {
