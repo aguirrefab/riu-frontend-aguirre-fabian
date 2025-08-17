@@ -1,11 +1,10 @@
 import { PercentPipe } from "@angular/common";
+import { provideHttpClient } from "@angular/common/http";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
-import { MatButtonModule } from "@angular/material/button";
-import { MatCardModule } from "@angular/material/card";
-import { MAT_DIALOG_DATA, MatDialogModule } from "@angular/material/dialog";
-import { MatProgressBarModule } from "@angular/material/progress-bar";
-import { NoopAnimationsModule } from "@angular/platform-browser/animations";
+import { MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { HeroDialogService } from "@services/hero-dialog/hero-dialog-service";
+import { DialogContainer } from "@shared/components/dialog-container/dialog-container";
+import { HeroContextService } from "../../../../core/services/hero-context/hero-context.service";
 import { HeroDialogDetail } from "./hero-dialog-detail";
 
 describe(HeroDialogDetail.name, () => {
@@ -27,16 +26,11 @@ describe(HeroDialogDetail.name, () => {
     heroDialogService = jasmine.createSpyObj("HeroDialogService", ["close"]);
 
     await TestBed.configureTestingModule({
-      imports: [
-        MatDialogModule,
-        MatButtonModule,
-        MatCardModule,
-        MatProgressBarModule,
-        NoopAnimationsModule,
-        HeroDialogDetail,
-      ],
+      imports: [HeroDialogDetail, DialogContainer],
       providers: [
         PercentPipe,
+        provideHttpClient(),
+        HeroContextService,
         { provide: MAT_DIALOG_DATA, useValue: mockData },
         { provide: HeroDialogService, useValue: heroDialogService },
       ],
@@ -50,7 +44,7 @@ describe(HeroDialogDetail.name, () => {
   it("should create the component", () => {
     expect(component).toBeTruthy();
     expect(
-      fixture.nativeElement.querySelector("mat-progress-bar")
+      fixture.nativeElement.querySelector("mat-progress-bar"),
     ).toBeTruthy();
   });
 

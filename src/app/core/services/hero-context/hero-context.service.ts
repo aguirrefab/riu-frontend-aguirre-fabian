@@ -1,17 +1,25 @@
-import { Injectable, signal } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
+import { inject, Injectable, signal } from "@angular/core";
 import { Hero } from "../../../shared/models/hero.model";
 
 @Injectable({
   providedIn: "root",
 })
 export class HeroContextService {
-  private _heroesSignal = signal<Hero[]>([
-    { id: 1, name: "CLARK KENT", alias: "Superman", powerLevel: 100 },
-    { id: 2, name: "BRUCE WAYNE", alias: "Batman", powerLevel: 30 },
-    { id: 3, name: "DIANA PRINCE", alias: "Wonder Woman", powerLevel: 95 },
-    { id: 4, name: "PETER PARKER", alias: "Spiderman", powerLevel: 85 },
-    { id: 5, name: "TONY STARK", alias: "Iron Man", powerLevel: 90 },
-  ]);
+  private _heroesSignal = signal<Hero[]>([]);
+  private readonly http = inject(HttpClient);
+
+  constructor() {
+    this.loadHeroes();
+  }
+
+  private loadHeroes(): void {
+    this.http
+      .get<{ heroes: Hero[] }>("assets/data/heroes.json")
+      .subscribe((data) => {
+        this._heroesSignal.set(data.heroes);
+      });
+  }
 
   heroes = this._heroesSignal.asReadonly();
 
@@ -31,7 +39,7 @@ export class HeroContextService {
     return this._heroesSignal().filter(
       (hero) =>
         hero.name.toLowerCase().includes(searchTerm) ||
-        (hero.alias && hero.alias.toLowerCase().includes(searchTerm))
+        (hero.alias && hero.alias.toLowerCase().includes(searchTerm)),
     );
   }
 

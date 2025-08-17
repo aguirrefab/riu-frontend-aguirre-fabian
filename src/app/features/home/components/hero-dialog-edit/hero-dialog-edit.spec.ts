@@ -1,13 +1,13 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { FormBuilder, ReactiveFormsModule } from "@angular/forms";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
-import { NoopAnimationsModule } from "@angular/platform-browser/animations";
 import { HeroContextService } from "@services/hero-context/hero-context.service";
+import { DialogContainer } from "@shared/components/dialog-container/dialog-container";
 import { HeroDialogData } from "@shared/models/hero-dialog.model";
 import { Hero } from "@shared/models/hero.model";
 import { HeroDialogEdit } from "./hero-dialog-edit";
 
-describe("HeroDialogEdit", () => {
+describe(`${HeroDialogEdit.name}`, () => {
   let component: HeroDialogEdit;
   let fixture: ComponentFixture<HeroDialogEdit>;
   let dialogRef: jasmine.SpyObj<MatDialogRef<HeroDialogEdit>>;
@@ -30,7 +30,7 @@ describe("HeroDialogEdit", () => {
     heroContextSpy = jasmine.createSpyObj("HeroContextService", ["updateHero"]);
 
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, NoopAnimationsModule, HeroDialogEdit],
+      imports: [ReactiveFormsModule, HeroDialogEdit, DialogContainer],
       providers: [
         FormBuilder,
         { provide: MatDialogRef, useValue: dialogRef },
@@ -52,7 +52,7 @@ describe("HeroDialogEdit", () => {
     expect(component.heroForm.get("name")?.value).toBe(mockHero.name);
     expect(component.heroForm.get("alias")?.value).toBe(mockHero.alias);
     expect(component.heroForm.get("powerLevel")?.value).toBe(
-      mockHero.powerLevel
+      mockHero.powerLevel,
     );
   });
 
@@ -96,11 +96,12 @@ describe("HeroDialogEdit", () => {
       alias: updatedHero.alias,
       powerLevel: updatedHero.powerLevel,
     });
+    const closeFn = spyOn(component, "closeDialog");
 
     component.onSubmit();
 
     expect(heroContextSpy.updateHero).toHaveBeenCalledWith(updatedHero);
-    expect(dialogRef.close).toHaveBeenCalledWith(updatedHero);
+    expect(closeFn).toHaveBeenCalledWith();
   });
 
   it("should not update hero when form is invalid", () => {

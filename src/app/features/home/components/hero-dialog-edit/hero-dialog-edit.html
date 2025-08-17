@@ -1,78 +1,58 @@
-<div class="hero-dialog">
-  <h2 mat-dialog-title>{{ data.title }}</h2>
-  <form [formGroup]="heroForm" (ngSubmit)="onSubmit()">
-    <mat-dialog-content>
-      <mat-card>
-        <mat-card-content>
-          <mat-form-field class="form-field">
-            <mat-label>Name</mat-label>
-            <input
-              matInput
-              formControlName="name"
-              placeholder="Enter hero name"
-              required
-            />
-            <mat-error *ngIf="heroForm.get('name')?.hasError('required')">
-              Name is required
-            </mat-error>
-          </mat-form-field>
+@if (data.hero) {
+  <app-dialog-container
+    [title]="'Edit Hero: '"
+    [hero]="data.hero"
+    [showSubmitButton]="true"
+    submitLabel="Save"
+    [submitDisabled]="!heroForm.valid"
+    (closeDialog)="closeDialog()"
+    (submitDialog)="onSubmit()"
+  >
+    <form [formGroup]="heroForm">
+      <table class="hero-edit-form">
+        <tr>
+          <td>
+            <mat-form-field>
+              <mat-label>Name</mat-label>
+              <input matInput formControlName="name" required appUppercase />
+              <mat-hint align="start"><i>Enter the name of hero</i> </mat-hint>
+              @if (heroForm.get("name")?.hasError("required")) {
+                <mat-error> Name is required</mat-error>
+              }
+            </mat-form-field>
+          </td>
+          <td>
+            <mat-form-field>
+              <mat-label>Alias</mat-label>
+              <input matInput formControlName="alias" required />
+              <mat-hint align="start"><i>Enter the alias of hero</i> </mat-hint>
+              @if (heroForm.get("alias")?.hasError("required")) {
+                <mat-error> Alias is required</mat-error>
+              }
+            </mat-form-field>
+          </td>
+        </tr>
+      </table>
 
-          <mat-form-field class="form-field">
-            <mat-label>Alias</mat-label>
-            <input
-              matInput
-              formControlName="alias"
-              placeholder="Enter hero alias"
-              required
-            />
-            <mat-error *ngIf="heroForm.get('alias')?.hasError('required')">
-              Alias is required
-            </mat-error>
-          </mat-form-field>
-
-          <mat-form-field class="form-field">
-            <mat-label>Power Level</mat-label>
-            <input
-              matInput
-              type="number"
-              formControlName="powerLevel"
-              placeholder="Enter power level (0-100)"
-              required
-              min="0"
-              max="100"
-            />
-            <mat-error *ngIf="heroForm.get('powerLevel')?.hasError('required')">
-              Power level is required
-            </mat-error>
-            <mat-error *ngIf="heroForm.get('powerLevel')?.hasError('min')">
-              Power level must be at least 0
-            </mat-error>
-            <mat-error *ngIf="heroForm.get('powerLevel')?.hasError('max')">
-              Power level must be at most 100
-            </mat-error>
-          </mat-form-field>
-        </mat-card-content>
-      </mat-card>
-    </mat-dialog-content>
-    <mat-dialog-actions align="end">
-      <button
-        matButton="text"
-        type="button"
-        (click)="closeDialog()"
-        aria-label="Cancel"
-      >
-        Cancel
-      </button>
-      <button
-        matButton="filled"
-        color="primary"
-        type="submit"
-        [disabled]="!heroForm.valid"
-        aria-label="Save changes"
-        (click)="onSubmit()"
-      >
-        Save
-      </button>
-    </mat-dialog-actions>
-  </form>
-</div>
+      <mat-form-field>
+        <mat-label>Power Level</mat-label>
+        <input
+          matInput
+          type="number"
+          formControlName="powerLevel"
+          required
+          min="0"
+          max="100"
+        />
+        <mat-hint align="start"><i>Enter power level (0-100)</i> </mat-hint>
+        @if (heroForm.get("powerLevel")?.hasError("required")) {
+          <mat-error>Power level is required</mat-error>
+        } @else if (heroForm.get("powerLevel")?.hasError("min")) {
+          <mat-error>Power level must be at least 0</mat-error>
+        } @else if (heroForm.get("powerLevel")?.hasError("max")) {
+          <mat-error>Power level must be at most 100</mat-error>
+        }
+      </mat-form-field>
+    </form>
+  </app-dialog-container>
+}

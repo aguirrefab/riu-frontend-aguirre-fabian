@@ -1,8 +1,9 @@
+import { provideHttpClient } from "@angular/common/http";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
-import { AddHeroDialog } from "./add-hero-dialog";
 import { ReactiveFormsModule } from "@angular/forms";
 import { MatDialogRef } from "@angular/material/dialog";
 import { HeroContextService } from "@services/hero-context/hero-context.service";
+import { AddHeroDialog } from "./add-hero-dialog";
 
 describe(`${AddHeroDialog.name}`, () => {
   let component: AddHeroDialog;
@@ -21,6 +22,7 @@ describe(`${AddHeroDialog.name}`, () => {
     await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, AddHeroDialog],
       providers: [
+        provideHttpClient(),
         { provide: MatDialogRef, useValue: mockDialogRef },
         { provide: HeroContextService, useValue: mockHeroContextService },
       ],
@@ -30,7 +32,7 @@ describe(`${AddHeroDialog.name}`, () => {
       MatDialogRef<AddHeroDialog>
     >;
     heroContextServiceSpy = TestBed.inject(
-      HeroContextService
+      HeroContextService,
     ) as jasmine.SpyObj<HeroContextService>;
 
     fixture = TestBed.createComponent(AddHeroDialog);

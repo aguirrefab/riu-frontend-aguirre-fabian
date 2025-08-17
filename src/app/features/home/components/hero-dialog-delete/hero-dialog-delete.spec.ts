@@ -1,7 +1,10 @@
+import { provideHttpClient } from "@angular/common/http";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
+import { DialogContainer } from "@shared/components/dialog-container/dialog-container";
 import { HeroDialogData } from "@shared/models/hero-dialog.model";
 import { Hero } from "@shared/models/hero.model";
+import { HeroContextService } from "../../../../core/services/hero-context/hero-context.service";
 import { HeroDialogDelete } from "./hero-dialog-delete";
 
 describe(HeroDialogDelete.name, () => {
@@ -18,15 +21,16 @@ describe(HeroDialogDelete.name, () => {
 
   const mockDialogData: HeroDialogData = {
     hero: mockHero,
-    title: "Delete Hero: Test Hero",
   };
 
   beforeEach(async () => {
     dialogRef = jasmine.createSpyObj("MatDialogRef", ["close"]);
 
     await TestBed.configureTestingModule({
-      imports: [HeroDialogDelete],
+      imports: [HeroDialogDelete, DialogContainer],
       providers: [
+        provideHttpClient(),
+        HeroContextService,
         { provide: MatDialogRef, useValue: dialogRef },
         { provide: MAT_DIALOG_DATA, useValue: mockDialogData },
       ],
@@ -43,10 +47,12 @@ describe(HeroDialogDelete.name, () => {
 
   it("should display hero information correctly", () => {
     const compiled = fixture.nativeElement;
-    expect(compiled.textContent).toContain(mockHero.name);
+    expect(compiled.querySelector("p").textContent).toContain(
+      "Are you sure you want to delete this hero?",
+    );
     expect(compiled.textContent).toContain(mockHero.alias);
     expect(compiled.textContent).toContain(
-      (mockHero.powerLevel || 0).toString()
+      (mockHero.powerLevel || 0).toString(),
     );
   });
 
@@ -63,19 +69,21 @@ describe(HeroDialogDelete.name, () => {
   it("should display delete confirmation message", () => {
     const compiled = fixture.nativeElement;
     expect(compiled.textContent).toContain(
-      "Are you sure you want to delete this hero?"
+      "Are you sure you want to delete this hero?",
     );
   });
 
   it("should display dialog title correctly", () => {
     const compiled = fixture.nativeElement;
-    expect(compiled.querySelector("h2").textContent).toBe(mockDialogData.title);
+    expect(compiled.querySelector("h2").textContent).toBe(
+      ` Delete Hero: ${mockHero.name.toUpperCase()}`,
+    );
   });
 
   it("should have cancel and delete buttons", () => {
     const buttons = fixture.nativeElement.querySelectorAll("button");
     expect(buttons.length).toBe(2);
-    expect(buttons[0].textContent).toContain("Cancel");
+    expect(buttons[0].textContent).toContain("Close");
     expect(buttons[1].textContent).toContain("Delete");
   });
 
