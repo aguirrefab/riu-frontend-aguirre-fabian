@@ -1,24 +1,26 @@
-<main>
-  <h2 mat-dialog-title>{{ data.title }}</h2>
-  <mat-dialog-content>
-    <p>Are you sure you want to delete this hero?</p>
-    <mat-card>
-      <mat-card-content>
-        <div class="hero-info">
-          <p><strong>Name:</strong> {{ data.hero.name }}</p>
-          <p><strong>Alias:</strong> {{ data.hero.alias || "-" }}</p>
-          <p><strong>Power Level:</strong> {{ data.hero.powerLevel }}</p>
-        </div>
-      </mat-card-content>
-    </mat-card>
-  </mat-dialog-content>
+@if (data.hero) {
+  <app-dialog-container
+    [title]="'Delete Hero:'"
+    [hero]="data.hero"
+    [showSubmitButton]="true"
+    submitLabel="Delete"
+    (closeDialog)="onCancel()"
+    (submitDialog)="onConfirm()"
+  >
+    <div>
+      <ul>
+        <li><strong>Name:</strong> {{ data.hero.name | uppercase }}</li>
+        <li><strong>Alias:</strong> {{ data.hero.alias }}</li>
+        <li><strong>Power Level:</strong> {{ data.hero.powerLevel }}</li>
+      </ul>
 
-  <mat-dialog-actions align="end">
-    <button matButton="text" (click)="onCancel()" aria-label="Cancel">
-      Cancel
-    </button>
-    <button mat-raised-button matButton="filled" (click)="onConfirm()">
-      Delete
-    </button>
-  </mat-dialog-actions>
-</main>
+      <section>
+        <p style="color: red">Are you sure you want to delete this hero?</p>
+        <ul>
+          <li>This action cannot be undone.</li>
+          <li>The hero will be permanently removed from the list.</li>
+        </ul>
+      </section>
+    </div>
+  </app-dialog-container>
+}

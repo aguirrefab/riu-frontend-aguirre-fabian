@@ -1,34 +1,26 @@
-<div class="hero-dialog">
-  <h2 mat-dialog-title>{{ data.title }}</h2>
-  <mat-dialog-content>
-    <mat-card>
-      <mat-card-content class="hero-card-detail">
-        <p class="label-text">Alias:</p>
+@if (data.hero) {
+  <app-dialog-container
+    [title]="'Hero Details: '"
+    [hero]="data.hero"
+    (closeDialog)="closeDialog()"
+  >
+    <div class="">
+      <ul>
+        <li><strong>Name:</strong> {{ data.hero.name | uppercase }}</li>
+        <li><strong>Alias:</strong> {{ data.hero.alias }}</li>
+      </ul>
+
+      <div>
+        <p class="label-text">Power level:</p>
+        <mat-progress-bar
+          mode="determinate"
+          [value]="data.hero.powerLevel || 0"
+        >
+        </mat-progress-bar>
         <p class="value-text">
-          {{ data.hero.alias || "Undefined" }}
+          {{ (data.hero.powerLevel ?? 0) / 100 | percent }}
         </p>
-        <div>
-          <p class="label-text">Power level:</p>
-          <mat-progress-bar
-            mode="determinate"
-            [value]="data.hero.powerLevel || 0"
-          >
-          </mat-progress-bar>
-          <p class="value-text">
-            {{ (data.hero.powerLevel ?? 0) / 100 | percent }}
-          </p>
-        </div>
-      </mat-card-content>
-    </mat-card>
-  </mat-dialog-content>
-  <mat-dialog-actions align="end">
-    <button
-      matButton="filled"
-      color="primary"
-      (click)="closeDialog()"
-      aria-label="Close modal"
-    >
-      Close
-    </button>
-  </mat-dialog-actions>
-</div>
+      </div>
+    </div>
+  </app-dialog-container>
+}

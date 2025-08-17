@@ -13,7 +13,6 @@ import { MatInputModule } from "@angular/material/input";
 import { MatPaginatorModule } from "@angular/material/paginator";
 import { MatProgressBarModule } from "@angular/material/progress-bar";
 import { MatTableModule } from "@angular/material/table";
-import { RouterModule } from "@angular/router";
 import { HeroContextService } from "@services/hero-context/hero-context.service";
 import { HeroDialogService } from "@services/hero-dialog/hero-dialog-service";
 import { HeroDialogData } from "@shared/models/hero-dialog.model";
@@ -53,7 +52,6 @@ describe(`${HeroList.name}`, () => {
         MatPaginatorModule,
         MatProgressBarModule,
         ReactiveFormsModule,
-        RouterModule,
       ],
       providers: [
         { provide: HeroContextService, useValue: heroServiceSpy },
@@ -83,7 +81,7 @@ describe(`${HeroList.name}`, () => {
     fixture.detectChanges();
 
     component.searchControl.setValue("bat");
-    tick(300); // Wait for debounce time
+    tick(300);
 
     const expectedHeroes = [HEROES[1]]; // Batman
     expect(component.filteredHeroes()).toEqual(expectedHeroes);
@@ -121,7 +119,6 @@ describe(`${HeroList.name}`, () => {
 
     expect(heroDialogSpy.openDetail).toHaveBeenCalledWith({
       hero: HEROES[0],
-      title: `Hero Details: ${HEROES[0].name}`,
     } as HeroDialogData);
   });
 
@@ -133,7 +130,6 @@ describe(`${HeroList.name}`, () => {
 
     expect(heroDialogSpy.openEdit).toHaveBeenCalledWith({
       hero: HEROES[0],
-      title: `Edit Hero: ${HEROES[0].name}`,
     } as HeroDialogData);
   });
 

@@ -1,5 +1,9 @@
 @use "@angular/material" as mat;
 
+* {
+  box-sizing: border-box;
+}
+
 html,
 body {
   height: 100dvh;

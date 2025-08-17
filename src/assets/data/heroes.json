@@ -1,0 +1,54 @@
+{
+  "heroes": [
+    { "id": 1, "name": "clark kent", "alias": "Superman", "powerLevel": 100 },
+    { "id": 2, "name": "bruce wayne", "alias": "Batman", "powerLevel": 30 },
+    {
+      "id": 3,
+      "name": "diana prince",
+      "alias": "Wonder Woman",
+      "powerLevel": 95
+    },
+    { "id": 4, "name": "peter parker", "alias": "Spiderman", "powerLevel": 85 },
+    { "id": 5, "name": "tony stark", "alias": "Iron Man", "powerLevel": 90 },
+    { "id": 6, "name": "barry allen", "alias": "The Flash", "powerLevel": 88 },
+    { "id": 7, "name": "arthur curry", "alias": "Aquaman", "powerLevel": 85 },
+    {
+      "id": 8,
+      "name": "oliver queen",
+      "alias": "Green Arrow",
+      "powerLevel": 50
+    },
+    {
+      "id": 9,
+      "name": "steve rogers",
+      "alias": "Captain America",
+      "powerLevel": 70
+    },
+    {
+      "id": 10,
+      "name": "natasha romanoff",
+      "alias": "Black Widow",
+      "powerLevel": 45
+    },
+    { "id": 11, "name": "thor odinson", "alias": "Thor", "powerLevel": 95 },
+    { "id": 12, "name": "bruce banner", "alias": "Hulk", "powerLevel": 98 },
+    {
+      "id": 13,
+      "name": "carol danvers",
+      "alias": "Captain Marvel",
+      "powerLevel": 98
+    },
+    {
+      "id": 14,
+      "name": "wanda maximoff",
+      "alias": "Scarlet Witch",
+      "powerLevel": 95
+    },
+    {
+      "id": 15,
+      "name": "doctor strange",
+      "alias": "Dr. Strange",
+      "powerLevel": 90
+    }
+  ]
+}

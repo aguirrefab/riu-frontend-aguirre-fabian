@@ -1,0 +1,30 @@
+.dialog-container {
+  padding: 1rem;
+  min-width: 300px;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+
+  h2 span {
+    font-weight: bold;
+  }
+
+  mat-card {
+    margin-bottom: 1rem;
+  }
+
+  mat-dialog-actions {
+    display: flex;
+    padding: 6px 24px;
+  }
+
+  .label-text {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+  }
+
+  .form-field {
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+}

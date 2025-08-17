@@ -1,4 +1,4 @@
-import { PercentPipe } from "@angular/common";
+import { PercentPipe, UpperCasePipe } from "@angular/common";
 import {
   ChangeDetectionStrategy,
   Component,
@@ -20,6 +20,7 @@ import { MatTooltip } from "@angular/material/tooltip";
 import { RouterModule } from "@angular/router";
 import { HeroContextService } from "@services/hero-context/hero-context.service";
 import { HeroDialogService } from "@services/hero-dialog/hero-dialog-service";
+import { EmptyStateComponent } from "@shared/components/empty-state/empty-state";
 import { Hero } from "@shared/models/hero.model";
 import { debounceTime, distinctUntilChanged } from "rxjs";
 
@@ -38,6 +39,8 @@ import { debounceTime, distinctUntilChanged } from "rxjs";
     PercentPipe,
     MatTooltip,
     MatButtonModule,
+    UpperCasePipe,
+    EmptyStateComponent,
   ],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -53,7 +56,7 @@ export class HeroList implements OnInit {
   private heroService = inject(HeroContextService);
   private dialog = inject(HeroDialogService);
 
-  private searchTerm = signal("");
+  searchTerm = signal("");
 
   filteredHeroes = computed(() => {
     const heroes = this.heroService.getHeroes();
@@ -64,7 +67,7 @@ export class HeroList implements OnInit {
     return heroes.filter(
       (hero) =>
         hero.name.toLowerCase().includes(term) ||
-        (hero.alias && hero.alias.toLowerCase().includes(term))
+        (hero.alias && hero.alias.toLowerCase().includes(term)),
     );
   });
 
@@ -92,7 +95,6 @@ export class HeroList implements OnInit {
   openHeroDetail(hero: Hero): void {
     this.dialog.openDetail({
       hero,
-      title: `Hero Details: ${hero.name}`,
     });
   }
 
@@ -105,14 +107,12 @@ export class HeroList implements OnInit {
   editHero(hero: Hero): void {
     this.dialog.openEdit({
       hero,
-      title: `Edit Hero: ${hero.name}`,
     });
   }
 
   deleteHero(hero: Hero): void {
     const dialogRef = this.dialog.openDelete({
       hero,
-      title: `Delete Hero: ${hero.name}`,
     });
 
     dialogRef.afterClosed().subscribe((confirmed) => {

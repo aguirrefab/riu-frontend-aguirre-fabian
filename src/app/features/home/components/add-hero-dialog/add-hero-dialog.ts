@@ -1,4 +1,4 @@
-import { CommonModule } from "@angular/common";
+import { UpperCasePipe } from "@angular/common";
 import { Component, inject, signal } from "@angular/core";
 import {
   FormBuilder,
@@ -6,28 +6,34 @@ import {
   ReactiveFormsModule,
   Validators,
 } from "@angular/forms";
-import { MatButtonModule } from "@angular/material/button";
-import { MatCardModule } from "@angular/material/card";
-import { MatDialogModule, MatDialogRef } from "@angular/material/dialog";
+import { MatDialogRef } from "@angular/material/dialog";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
-import { Hero } from "@shared/models/hero.model";
-import { HeroContextService } from "./../../../../core/services/hero-context/hero-context.service";
+import { HeroContextService } from "@services/hero-context/hero-context.service";
+import { DialogContainer } from "@shared/components/dialog-container/dialog-container";
+import { InputUppercaseDirective } from "@src/app/shared/directives/input-uppercase.directive";
 
 @Component({
   selector: "app-add-hero-dialog",
   standalone: true,
   imports: [
-    CommonModule,
     ReactiveFormsModule,
-    MatDialogModule,
-    MatButtonModule,
     MatFormFieldModule,
     MatInputModule,
-    MatCardModule,
+    InputUppercaseDirective,
+    UpperCasePipe,
+    DialogContainer,
   ],
   templateUrl: "./add-hero-dialog.html",
-  styleUrls: ["./add-hero-dialog.scss"],
+  styles: [
+    `
+      form {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+    `,
+  ],
 })
 export class AddHeroDialog {
   private readonly dialogRef = inject(MatDialogRef<AddHeroDialog>);
