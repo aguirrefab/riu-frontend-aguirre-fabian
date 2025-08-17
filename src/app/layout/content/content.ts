@@ -6,18 +6,6 @@ import { RouterOutlet } from "@angular/router";
   standalone: true,
   imports: [RouterOutlet],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `
-    <main class="app-content">
-      <router-outlet></router-outlet>
-    </main>
-  `,
-  styles: [
-    `
-      .app-content {
-        flex: 1;
-        padding: 2rem;
-      }
-    `,
-  ],
+  template: ` <router-outlet></router-outlet> `,
 })
 export class Content {}

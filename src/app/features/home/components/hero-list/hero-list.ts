@@ -8,6 +8,7 @@ import {
   signal,
 } from "@angular/core";
 import { FormControl, ReactiveFormsModule } from "@angular/forms";
+import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatIconModule } from "@angular/material/icon";
@@ -36,6 +37,7 @@ import { debounceTime, distinctUntilChanged } from "rxjs";
     RouterModule,
     PercentPipe,
     MatTooltip,
+    MatButtonModule,
   ],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -118,5 +120,9 @@ export class HeroList implements OnInit {
         this.heroService.deleteHero(hero.id);
       }
     });
+  }
+
+  openAddHeroDialog(): void {
+    this.dialog.openAddHero();
   }
 }

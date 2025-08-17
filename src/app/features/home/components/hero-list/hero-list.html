@@ -1,8 +1,8 @@
 <div class="container">
   <mat-card>
-    <mat-card-content>
-      <div class="search-container">
-        <mat-form-field appearance="outline" class="search-field">
+    <div class="header-container">
+      <section>
+        <mat-form-field class="search-field">
           <mat-label>Search Heroes</mat-label>
           <input
             matInput
@@ -11,8 +11,21 @@
           />
           <mat-icon matSuffix>search</mat-icon>
         </mat-form-field>
-      </div>
-
+      </section>
+      <section>
+        <button
+          matButton="filled"
+          color="primary"
+          type="submit"
+          aria-label="Add new hero"
+          (click)="openAddHeroDialog()"
+        >
+          <mat-label>Add new</mat-label>
+          <mat-icon matSuffix>add</mat-icon>
+        </button>
+      </section>
+    </div>
+    <mat-card-content class="list-content">
       <div class="table-container">
         <table mat-table [dataSource]="pagedHeroes()">
           <!-- Name Column -->
@@ -59,7 +72,7 @@
                 <button
                   matMiniFab
                   aria-label="Edit Hero"
-                  matTooltip="edit hero"
+                  matTooltip="Edit hero"
                   (click)="editHero(hero); $event.stopPropagation()"
                 >
                   <mat-icon>edit</mat-icon>
@@ -85,17 +98,16 @@
             (click)="openHeroDetail(row)"
           ></tr>
         </table>
-
-        <mat-paginator
-          [length]="totalHeroes()"
-          [pageSize]="pageSize"
-          [pageIndex]="pageIndex"
-          [pageSizeOptions]="[5, 10, 25, 100]"
-          (page)="onPageChange($event)"
-          aria-label="Select page"
-        >
-        </mat-paginator>
       </div>
+      <mat-paginator
+        [length]="totalHeroes()"
+        [pageSize]="pageSize"
+        [pageIndex]="pageIndex"
+        [pageSizeOptions]="[5, 10, 25, 100]"
+        (page)="onPageChange($event)"
+        aria-label="Select page"
+      >
+      </mat-paginator>
     </mat-card-content>
   </mat-card>
 </div>
