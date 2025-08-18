@@ -1,130 +1,134 @@
-<div class="container">
-  <mat-card>
-    <div class="header-container">
-      <section>
-        <mat-form-field class="search-field">
-          <mat-label>Search Heroes</mat-label>
-          <input
-            matInput
-            [formControl]="searchControl"
-            placeholder="Search by name or alias"
-          />
-          <mat-icon matSuffix>search</mat-icon>
-        </mat-form-field>
-      </section>
+@if (isLoading) {
+  <app-loader />
+} @else {
+  <div class="container">
+    <mat-card>
+      <div class="header-container">
+        <section>
+          <mat-form-field class="search-field">
+            <mat-label>Search Heroes</mat-label>
+            <input
+              matInput
+              [formControl]="searchControl"
+              placeholder="Search by name or alias"
+            />
+            <mat-icon matSuffix>search</mat-icon>
+          </mat-form-field>
+        </section>
 
-      <section>
-        <button
-          matButton="filled"
-          color="primary"
-          type="submit"
-          aria-label="Add new hero"
-          (click)="openAddHeroDialog()"
-        >
-          <mat-label>Add new</mat-label>
-          <mat-icon matSuffix>add</mat-icon>
-        </button>
-      </section>
-    </div>
-    @if (pagedHeroes().length > 0) {
-      <mat-card-content class="list-content">
-        <div class="table-container">
-          <table mat-table [dataSource]="pagedHeroes()">
-            <!-- Name Column -->
-            <ng-container matColumnDef="name">
-              <th mat-header-cell *matHeaderCellDef>Name</th>
-              <td mat-cell *matCellDef="let hero">
-                {{ hero.name | uppercase }}
-              </td>
-            </ng-container>
+        <section>
+          <button
+            matButton="filled"
+            color="primary"
+            type="submit"
+            aria-label="Add new hero"
+            (click)="openAddHeroDialog()"
+          >
+            <mat-label>Add new</mat-label>
+            <mat-icon matSuffix>add</mat-icon>
+          </button>
+        </section>
+      </div>
+      @if (pagedHeroes().length > 0) {
+        <mat-card-content class="list-content">
+          <div class="table-container">
+            <table mat-table [dataSource]="pagedHeroes()">
+              <!-- Name Column -->
+              <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef>Name</th>
+                <td mat-cell *matCellDef="let hero">
+                  {{ hero.name | uppercase }}
+                </td>
+              </ng-container>
 
-            <!-- Alias Column -->
-            <ng-container matColumnDef="alias">
-              <th mat-header-cell *matHeaderCellDef>Alias</th>
-              <td mat-cell *matCellDef="let hero">{{ hero.alias || "-" }}</td>
-            </ng-container>
+              <!-- Alias Column -->
+              <ng-container matColumnDef="alias">
+                <th mat-header-cell *matHeaderCellDef>Alias</th>
+                <td mat-cell *matCellDef="let hero">{{ hero.alias || "-" }}</td>
+              </ng-container>
 
-            <!-- Power Level Column -->
-            <ng-container matColumnDef="powerLevel">
-              <th mat-header-cell *matHeaderCellDef>Power Level</th>
-              <td mat-cell *matCellDef="let hero">
-                <mat-progress-bar
-                  mode="determinate"
-                  [value]="hero.powerLevel || 0"
-                  [color]="getPowerLevelColor(hero.powerLevel)"
-                >
-                </mat-progress-bar>
-                <span class="power-level">
-                  {{ hero.powerLevel / 100 | percent }}</span
-                >
-              </td>
-            </ng-container>
-
-            <!-- Actions Column -->
-            <ng-container matColumnDef="actions">
-              <th mat-header-cell *matHeaderCellDef>Actions</th>
-              <td mat-cell *matCellDef="let hero">
-                <div class="actions-cell">
-                  <button
-                    matMiniFab
-                    aria-label="View Hero"
-                    matTooltip="view detail"
-                    (click)="openHeroDetail(hero); $event.stopPropagation()"
+              <!-- Power Level Column -->
+              <ng-container matColumnDef="powerLevel">
+                <th mat-header-cell *matHeaderCellDef>Power Level</th>
+                <td mat-cell *matCellDef="let hero">
+                  <mat-progress-bar
+                    mode="determinate"
+                    [value]="hero.powerLevel || 0"
+                    [color]="getPowerLevelColor(hero.powerLevel)"
                   >
-                    <mat-icon>remove_red_eye</mat-icon>
-                  </button>
-                  <button
-                    matMiniFab
-                    aria-label="Edit Hero"
-                    matTooltip="Edit hero"
-                    (click)="editHero(hero); $event.stopPropagation()"
+                  </mat-progress-bar>
+                  <span class="power-level">
+                    {{ hero.powerLevel / 100 | percent }}</span
                   >
-                    <mat-icon>edit</mat-icon>
-                  </button>
-                  <button
-                    matMiniFab
-                    color="warn"
-                    aria-label="Delete Hero"
-                    matTooltip="delete hero"
-                    (click)="deleteHero(hero); $event.stopPropagation()"
-                  >
-                    <mat-icon>delete</mat-icon>
-                  </button>
-                </div>
-              </td>
-            </ng-container>
+                </td>
+              </ng-container>
 
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr
-              mat-row
-              *matRowDef="let row; columns: displayedColumns"
-              class="hero-row"
-              (click)="openHeroDetail(row)"
-            ></tr>
-          </table>
-        </div>
-        <mat-paginator
-          [length]="totalHeroes()"
-          [pageSize]="pageSize"
-          [pageIndex]="pageIndex"
-          [pageSizeOptions]="[5, 10, 25, 100]"
-          (page)="onPageChange($event)"
-          aria-label="Select page"
-        >
-        </mat-paginator>
-      </mat-card-content>
-    } @else {
-      <mat-card-content>
-        <app-empty-state
-          [title]="searchTerm() ? 'No heroes found' : 'No heroes available'"
-          [message]="
-            searchTerm()
-              ? 'Try adjusting your search'
-              : 'Click the Add new button to create your first hero'
-          "
-          [icon]="searchTerm() ? 'search_off' : 'info'"
-        ></app-empty-state>
-      </mat-card-content>
-    }
-  </mat-card>
-</div>
+              <!-- Actions Column -->
+              <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef>Actions</th>
+                <td mat-cell *matCellDef="let hero">
+                  <div class="actions-cell">
+                    <button
+                      matMiniFab
+                      aria-label="View Hero"
+                      matTooltip="view detail"
+                      (click)="openHeroDetail(hero); $event.stopPropagation()"
+                    >
+                      <mat-icon>remove_red_eye</mat-icon>
+                    </button>
+                    <button
+                      matMiniFab
+                      aria-label="Edit Hero"
+                      matTooltip="Edit hero"
+                      (click)="editHero(hero); $event.stopPropagation()"
+                    >
+                      <mat-icon>edit</mat-icon>
+                    </button>
+                    <button
+                      matMiniFab
+                      color="warn"
+                      aria-label="Delete Hero"
+                      matTooltip="delete hero"
+                      (click)="deleteHero(hero); $event.stopPropagation()"
+                    >
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                  </div>
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr
+                mat-row
+                *matRowDef="let row; columns: displayedColumns"
+                class="hero-row"
+                (click)="openHeroDetail(row)"
+              ></tr>
+            </table>
+          </div>
+          <mat-paginator
+            [length]="totalHeroes()"
+            [pageSize]="pageSize"
+            [pageIndex]="pageIndex"
+            [pageSizeOptions]="[5, 10, 25, 100]"
+            (page)="onPageChange($event)"
+            aria-label="Select page"
+          >
+          </mat-paginator>
+        </mat-card-content>
+      } @else {
+        <mat-card-content>
+          <app-empty-state
+            [title]="searchTerm() ? 'No heroes found' : 'No heroes available'"
+            [message]="
+              searchTerm()
+                ? 'Try adjusting your search'
+                : 'Click the Add new button to create your first hero'
+            "
+            [icon]="searchTerm() ? 'search_off' : 'info'"
+          ></app-empty-state>
+        </mat-card-content>
+      }
+    </mat-card>
+  </div>
+}

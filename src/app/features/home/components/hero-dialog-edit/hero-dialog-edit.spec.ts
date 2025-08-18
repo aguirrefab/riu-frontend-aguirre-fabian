@@ -1,10 +1,10 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { FormBuilder, ReactiveFormsModule } from "@angular/forms";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
-import { HeroContextService } from "@services/hero-context/hero-context.service";
 import { DialogContainer } from "@shared/components/dialog-container/dialog-container";
 import { HeroDialogData } from "@shared/models/hero-dialog.model";
 import { Hero } from "@shared/models/hero.model";
+import { HeroContextService } from "@src/app/features/home/services/hero-context/hero-context.service";
 import { HeroDialogEdit } from "./hero-dialog-edit";
 
 describe(`${HeroDialogEdit.name}`, () => {

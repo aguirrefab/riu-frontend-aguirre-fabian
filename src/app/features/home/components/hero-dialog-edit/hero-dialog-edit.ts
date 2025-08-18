@@ -8,10 +8,10 @@ import {
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
-import { HeroContextService } from "@services/hero-context/hero-context.service";
 import { DialogContainer } from "@shared/components/dialog-container/dialog-container";
 import { HeroDialogData } from "@shared/models/hero-dialog.model";
 import { Hero } from "@shared/models/hero.model";
+import { HeroContextService } from "@src/app/features/home/services/hero-context/hero-context.service";
 import { InputUppercaseDirective } from "@src/app/shared/directives/input-uppercase.directive";
 
 @Component({

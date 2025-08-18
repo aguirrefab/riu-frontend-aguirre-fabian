@@ -3,7 +3,7 @@ import { Component, inject } from "@angular/core";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { DialogContainer } from "@shared/components/dialog-container/dialog-container";
 import { HeroDialogData } from "@shared/models/hero-dialog.model";
-import { HeroContextService } from "../../../../core/services/hero-context/hero-context.service";
+import { HeroContextService } from "../../services/hero-context/hero-context.service";
 
 @Component({
   selector: "app-hero-dialog-delete",

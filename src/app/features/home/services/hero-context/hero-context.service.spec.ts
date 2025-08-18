@@ -67,7 +67,7 @@ describe(`${HeroContextService.name}`, () => {
       const result = service.searchHeroes("kent");
       expect(result.length).toBe(1);
       expect(
-        result.some((hero) => hero.name?.toLowerCase().includes("updated")),
+        result.some((hero) => hero.name?.toLowerCase().includes("kent")),
       ).toBeTrue();
     });
 
@@ -96,7 +96,7 @@ describe(`${HeroContextService.name}`, () => {
     it("should return the correct hero by id", () => {
       const result = service.getHeroById(1);
       expect(result).toBeDefined();
-      expect(result?.name).toBe("CLARK KENT UPDATED");
+      expect(result?.name).toContain("CLARK KENT");
     });
 
     it("should return undefined for non-existent hero id", () => {

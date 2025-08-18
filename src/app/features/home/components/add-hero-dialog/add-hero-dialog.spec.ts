@@ -2,7 +2,7 @@ import { provideHttpClient } from "@angular/common/http";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { ReactiveFormsModule } from "@angular/forms";
 import { MatDialogRef } from "@angular/material/dialog";
-import { HeroContextService } from "@services/hero-context/hero-context.service";
+import { HeroContextService } from "@src/app/features/home/services/hero-context/hero-context.service";
 import { AddHeroDialog } from "./add-hero-dialog";
 
 describe(`${AddHeroDialog.name}`, () => {
