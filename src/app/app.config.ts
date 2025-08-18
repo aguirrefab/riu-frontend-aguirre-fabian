@@ -1,7 +1,4 @@
-import {
-  provideHttpClient,
-  withInterceptorsFromDi,
-} from "@angular/common/http";
+import { provideHttpClient, withInterceptors } from "@angular/common/http";
 import {
   ApplicationConfig,
   provideBrowserGlobalErrorListeners,
@@ -9,6 +6,7 @@ import {
 } from "@angular/core";
 import { provideRouter, withInMemoryScrolling } from "@angular/router";
 import { routes } from "./app.routes";
+import { HTTPInterceptor } from "./core/interceptors/http-interceptor";
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -19,8 +17,8 @@ export const appConfig: ApplicationConfig = {
       withInMemoryScrolling({
         scrollPositionRestoration: "enabled",
         anchorScrolling: "enabled",
-      })
+      }),
     ),
-    provideHttpClient(withInterceptorsFromDi()),
+    provideHttpClient(withInterceptors([HTTPInterceptor])),
   ],
 };
