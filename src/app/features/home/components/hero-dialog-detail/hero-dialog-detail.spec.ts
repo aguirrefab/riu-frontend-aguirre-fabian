@@ -2,9 +2,9 @@ import { PercentPipe } from "@angular/common";
 import { provideHttpClient } from "@angular/common/http";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { MAT_DIALOG_DATA } from "@angular/material/dialog";
-import { HeroDialogService } from "@services/hero-dialog/hero-dialog-service";
 import { DialogContainer } from "@shared/components/dialog-container/dialog-container";
-import { HeroContextService } from "../../../../core/services/hero-context/hero-context.service";
+import { HeroDialogService } from "@src/app/features/home/services/hero-dialog/hero-dialog-service";
+import { HeroContextService } from "../../services/hero-context/hero-context.service";
 import { HeroDialogDetail } from "./hero-dialog-detail";
 
 describe(HeroDialogDetail.name, () => {

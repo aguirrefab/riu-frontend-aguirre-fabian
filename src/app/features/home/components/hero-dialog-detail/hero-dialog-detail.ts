@@ -2,9 +2,9 @@ import { PercentPipe, UpperCasePipe } from "@angular/common";
 import { ChangeDetectionStrategy, Component, inject } from "@angular/core";
 import { MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { MatProgressBar } from "@angular/material/progress-bar";
-import { HeroDialogService } from "@services/hero-dialog/hero-dialog-service";
 import { DialogContainer } from "@shared/components/dialog-container/dialog-container";
 import { HeroDialogData } from "@shared/models/hero-dialog.model";
+import { HeroDialogService } from "@src/app/features/home/services/hero-dialog/hero-dialog-service";
 
 @Component({
   standalone: true,

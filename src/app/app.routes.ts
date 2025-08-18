@@ -10,14 +10,20 @@ export const routes: Routes = [
         path: "",
         loadComponent: () =>
           import("./features/home/pages/home-page/home-page").then(
-            (m) => m.HomePage
+            (c) => c.HomePage,
+          ),
+      },
+      {
+        path: "not-found",
+        loadComponent: () =>
+          import("./features/not-found/pages/not-found").then(
+            (c) => c.NotFound,
           ),
       },
     ],
   },
   {
     path: "**",
-    redirectTo: "",
-    pathMatch: "full",
+    redirectTo: "not-found",
   },
 ];

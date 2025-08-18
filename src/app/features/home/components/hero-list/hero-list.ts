@@ -18,10 +18,12 @@ import { MatProgressBar } from "@angular/material/progress-bar";
 import { MatTableModule } from "@angular/material/table";
 import { MatTooltip } from "@angular/material/tooltip";
 import { RouterModule } from "@angular/router";
-import { HeroContextService } from "@services/hero-context/hero-context.service";
-import { HeroDialogService } from "@services/hero-dialog/hero-dialog-service";
+import { LoadingService } from "@services/loading/loading-service";
 import { EmptyStateComponent } from "@shared/components/empty-state/empty-state";
+import { Loader } from "@shared/components/loader/loader";
 import { Hero } from "@shared/models/hero.model";
+import { HeroContextService } from "@src/app/features/home/services/hero-context/hero-context.service";
+import { HeroDialogService } from "@src/app/features/home/services/hero-dialog/hero-dialog-service";
 import { debounceTime, distinctUntilChanged } from "rxjs";
 
 @Component({
@@ -41,6 +43,7 @@ import { debounceTime, distinctUntilChanged } from "rxjs";
     MatButtonModule,
     UpperCasePipe,
     EmptyStateComponent,
+    Loader,
   ],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -55,6 +58,11 @@ export class HeroList implements OnInit {
 
   private heroService = inject(HeroContextService);
   private dialog = inject(HeroDialogService);
+  private loadingService = inject(LoadingService);
+
+  get isLoading(): boolean {
+    return this.loadingService.isLoading();
+  }
 
   searchTerm = signal("");
 

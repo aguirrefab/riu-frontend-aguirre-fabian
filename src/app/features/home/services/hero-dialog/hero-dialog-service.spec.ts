@@ -36,7 +36,7 @@ describe(`${HeroDialogService.name}`, () => {
       matDialogSpy.open.and.returnValue(afterClosedSpy);
 
       const result = await firstValueFrom(
-        service.openDetail(heroData).afterClosed()
+        service.openDetail(heroData).afterClosed(),
       );
 
       expect(matDialogSpy.open).toHaveBeenCalledWith(
@@ -49,7 +49,7 @@ describe(`${HeroDialogService.name}`, () => {
           maxWidth: "600px",
           data: heroData,
           width: "600px",
-        })
+        }),
       );
       expect(result).toEqual(afterClosedValue);
     });
@@ -63,7 +63,7 @@ describe(`${HeroDialogService.name}`, () => {
       matDialogSpy.open.and.returnValue(afterClosedSpy);
 
       const result = await firstValueFrom(
-        service.openDetail(heroData).afterClosed()
+        service.openDetail(heroData).afterClosed(),
       );
 
       expect(result).toBeUndefined();
@@ -90,7 +90,7 @@ describe(`${HeroDialogService.name}`, () => {
       matDialogSpy.open.and.returnValue(afterClosedSpy);
 
       const result = await firstValueFrom(
-        service.openEdit(heroData).afterClosed()
+        service.openEdit(heroData).afterClosed(),
       );
 
       expect(matDialogSpy.open).toHaveBeenCalledWith(
@@ -103,7 +103,7 @@ describe(`${HeroDialogService.name}`, () => {
           maxWidth: "600px",
           data: heroData,
           width: "600px",
-        })
+        }),
       );
       expect(result).toEqual(updatedHero);
     });
@@ -117,7 +117,7 @@ describe(`${HeroDialogService.name}`, () => {
       matDialogSpy.open.and.returnValue(afterClosedSpy);
 
       const result = await firstValueFrom(
-        service.openEdit(heroData).afterClosed()
+        service.openEdit(heroData).afterClosed(),
       );
 
       expect(result).toBeUndefined();

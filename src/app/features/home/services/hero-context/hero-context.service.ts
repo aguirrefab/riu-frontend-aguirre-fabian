@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { inject, Injectable, signal } from "@angular/core";
-import { Hero } from "../../../shared/models/hero.model";
+import { Hero } from "../../../../shared/models/hero.model";
 
 @Injectable({
   providedIn: "root",
@@ -8,6 +8,7 @@ import { Hero } from "../../../shared/models/hero.model";
 export class HeroContextService {
   private _heroesSignal = signal<Hero[]>([]);
   private readonly http = inject(HttpClient);
+  heroes = this._heroesSignal.asReadonly();
 
   constructor() {
     this.loadHeroes();
@@ -20,8 +21,6 @@ export class HeroContextService {
         this._heroesSignal.set(data.heroes);
       });
   }
-
-  heroes = this._heroesSignal.asReadonly();
 
   getHeroes(): Hero[] {
     return this.heroes();

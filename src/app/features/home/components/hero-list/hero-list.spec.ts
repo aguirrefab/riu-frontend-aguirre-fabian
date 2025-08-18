@@ -13,10 +13,10 @@ import { MatInputModule } from "@angular/material/input";
 import { MatPaginatorModule } from "@angular/material/paginator";
 import { MatProgressBarModule } from "@angular/material/progress-bar";
 import { MatTableModule } from "@angular/material/table";
-import { HeroContextService } from "@services/hero-context/hero-context.service";
-import { HeroDialogService } from "@services/hero-dialog/hero-dialog-service";
 import { HeroDialogData } from "@shared/models/hero-dialog.model";
 import { Hero } from "@shared/models/hero.model";
+import { HeroContextService } from "@src/app/features/home/services/hero-context/hero-context.service";
+import { HeroDialogService } from "@src/app/features/home/services/hero-dialog/hero-dialog-service";
 import { HeroList } from "./hero-list";
 
 describe(`${HeroList.name}`, () => {
