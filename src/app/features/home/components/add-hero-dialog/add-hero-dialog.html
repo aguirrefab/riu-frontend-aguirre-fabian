@@ -1,0 +1,48 @@
+<app-dialog-container
+  [title]="'Add Hero ' + (heroName() ? (heroName() | uppercase) : '')"
+  [showSubmitButton]="true"
+  submitLabel="Add"
+  [submitDisabled]="!heroForm.valid"
+  (closeDialog)="closeDialog()"
+  (submitDialog)="onSubmit()"
+>
+  <form [formGroup]="heroForm">
+    <mat-form-field class="form-field">
+      <mat-label>Name</mat-label>
+      <input matInput formControlName="name" required appUppercase />
+      <mat-hint align="start"><i>Enter the name of hero</i> </mat-hint>
+      @if (heroForm.get("name")?.hasError("required")) {
+        <mat-error> Name is required</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field class="form-field">
+      <mat-label>Alias</mat-label>
+      <input matInput formControlName="alias" required />
+      <mat-hint align="start"><i>Enter the alias of hero</i> </mat-hint>
+      @if (heroForm.get("alias")?.hasError("required")) {
+        <mat-error> Alias is required</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field class="form-field">
+      <mat-label>Power Level</mat-label>
+      <input
+        matInput
+        type="number"
+        formControlName="powerLevel"
+        required
+        min="0"
+        max="100"
+      />
+      <mat-hint align="start"><i>Enter power level (0-100)</i> </mat-hint>
+      @if (heroForm.get("powerLevel")?.hasError("required")) {
+        <mat-error>Power level is required</mat-error>
+      } @else if (heroForm.get("powerLevel")?.hasError("min")) {
+        <mat-error>Power level must be at least 0</mat-error>
+      } @else if (heroForm.get("powerLevel")?.hasError("max")) {
+        <mat-error>Power level must be at most 100</mat-error>
+      }
+    </mat-form-field>
+  </form>
+</app-dialog-container>

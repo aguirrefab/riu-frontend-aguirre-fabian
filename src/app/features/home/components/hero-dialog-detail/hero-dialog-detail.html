@@ -1,0 +1,26 @@
+@if (data.hero) {
+  <app-dialog-container
+    [title]="'Hero Details: '"
+    [hero]="data.hero"
+    (closeDialog)="closeDialog()"
+  >
+    <div class="">
+      <ul>
+        <li><strong>Name:</strong> {{ data.hero.name | uppercase }}</li>
+        <li><strong>Alias:</strong> {{ data.hero.alias }}</li>
+      </ul>
+
+      <div>
+        <p class="label-text">Power level:</p>
+        <mat-progress-bar
+          mode="determinate"
+          [value]="data.hero.powerLevel || 0"
+        >
+        </mat-progress-bar>
+        <p class="value-text">
+          {{ (data.hero.powerLevel ?? 0) / 100 | percent }}
+        </p>
+      </div>
+    </div>
+  </app-dialog-container>
+}

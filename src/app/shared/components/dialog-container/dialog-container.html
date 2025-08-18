@@ -1,0 +1,35 @@
+<div class="dialog-container">
+  <h2 mat-dialog-title>
+    {{ title() }} <span>{{ hero()?.name | uppercase }}</span>
+  </h2>
+  <mat-dialog-content>
+    <mat-card>
+      <mat-card-content>
+        <ng-content></ng-content>
+      </mat-card-content>
+    </mat-card>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button
+      matButton="text"
+      type="button"
+      matButton="tonal"
+      (click)="onClose()"
+      aria-label="Close modal"
+    >
+      Close
+    </button>
+
+    @if (showSubmitButton()) {
+      <button
+        matButton="filled"
+        type="submit"
+        [disabled]="submitDisabled()"
+        (click)="onSubmit()"
+        aria-label="Submit modal"
+      >
+        {{ submitLabel() }}
+      </button>
+    }
+  </mat-dialog-actions>
+</div>

@@ -1,23 +1,29 @@
 import { Routes } from "@angular/router";
-import { MainLayoutComponent } from "./layout/main-layout/main-layout.component";
+import { MainLayout } from "./layout/main-layout/main-layout";
 
 export const routes: Routes = [
   {
     path: "",
-    component: MainLayoutComponent,
+    component: MainLayout,
     children: [
       {
         path: "",
         loadComponent: () =>
-          import("./features/home/pages/home-page/home-page.component").then(
-            (m) => m.HomePageComponent
+          import("./features/home/pages/home-page/home-page").then(
+            (c) => c.HomePage,
+          ),
+      },
+      {
+        path: "not-found",
+        loadComponent: () =>
+          import("./features/not-found/pages/not-found").then(
+            (c) => c.NotFound,
           ),
       },
     ],
   },
   {
     path: "**",
-    redirectTo: "",
-    pathMatch: "full",
+    redirectTo: "not-found",
   },
 ];

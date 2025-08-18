@@ -1,0 +1,57 @@
+.container {
+  padding: 20px;
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+}
+
+.search-field {
+  width: 300px;
+}
+
+.mat-mdc-table {
+  width: 100%;
+}
+
+.hero-row:hover {
+  background: #fcb5b5;
+}
+
+.hero-row {
+  cursor: pointer;
+}
+
+.actions-cell {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+
+  button {
+    border: none;
+    cursor: pointer;
+  }
+}
+
+.list-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.power-level {
+  display: inline-block;
+  min-width: 30px;
+  text-align: right;
+  margin-left: 10px;
+}
+
+mat-progress-bar {
+  display: inline-block;
+  width: 100px;
+  height: 8px;
+  border-radius: 4px;
+}
