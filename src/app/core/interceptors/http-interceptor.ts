@@ -19,7 +19,6 @@ export const HTTPInterceptor: HttpInterceptorFn = (
   loadingService.show();
 
   return next(request).pipe(
-    //delay(4000), // simulate a network delay of time
     catchError((error: HttpErrorResponse) => throwError(() => error)),
     finalize(() => {
       loadingService.hide();
