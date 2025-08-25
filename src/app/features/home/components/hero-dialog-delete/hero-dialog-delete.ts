@@ -3,7 +3,6 @@ import { Component, inject } from "@angular/core";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { DialogContainer } from "@shared/components/dialog-container/dialog-container";
 import { HeroDialogData } from "@shared/models/hero-dialog.model";
-import { HeroContextService } from "../../services/hero-context/hero-context.service";
 
 @Component({
   selector: "app-hero-dialog-delete",
@@ -13,15 +12,9 @@ import { HeroContextService } from "../../services/hero-context/hero-context.ser
 })
 export class HeroDialogDelete {
   private readonly dialogRef = inject(MatDialogRef<HeroDialogDelete>);
-  private readonly heroContext = inject(HeroContextService);
   readonly data = inject<HeroDialogData>(MAT_DIALOG_DATA);
 
   onConfirm(): void {
-    this.heroContext.deleteHero(this.data.hero.id);
-    this.onCancel();
-  }
-
-  onCancel(): void {
-    this.dialogRef.close();
+    this.dialogRef.close(true);
   }
 }

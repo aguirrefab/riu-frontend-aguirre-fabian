@@ -2,14 +2,14 @@ import { provideHttpClient } from "@angular/common/http";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { ReactiveFormsModule } from "@angular/forms";
 import { MatDialogRef } from "@angular/material/dialog";
-import { HeroContextService } from "@src/app/features/home/services/hero-context/hero-context.service";
+import { HeroContextService } from "@src/app/core/services/hero-context/hero-context.service";
 import { AddHeroDialog } from "./add-hero-dialog";
 
 describe(`${AddHeroDialog.name}`, () => {
   let component: AddHeroDialog;
   let fixture: ComponentFixture<AddHeroDialog>;
-  let heroContextServiceSpy: jasmine.SpyObj<HeroContextService>;
-  let matDialogRefSpy: jasmine.SpyObj<MatDialogRef<AddHeroDialog>>;
+
+  const dialogRefSpy = jasmine.createSpyObj("MatDialogRef", ["close"]);
 
   beforeEach(async () => {
     const mockHeroContextService = jasmine.createSpyObj("HeroContextService", [
@@ -17,23 +17,14 @@ describe(`${AddHeroDialog.name}`, () => {
       "getHeroes",
     ]);
 
-    const mockDialogRef = jasmine.createSpyObj("MatDialogRef", ["close"]);
-
     await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, AddHeroDialog],
       providers: [
         provideHttpClient(),
-        { provide: MatDialogRef, useValue: mockDialogRef },
+        { provide: MatDialogRef, useValue: dialogRefSpy },
         { provide: HeroContextService, useValue: mockHeroContextService },
       ],
     }).compileComponents();
-
-    matDialogRefSpy = TestBed.inject(MatDialogRef) as jasmine.SpyObj<
-      MatDialogRef<AddHeroDialog>
-    >;
-    heroContextServiceSpy = TestBed.inject(
-      HeroContextService,
-    ) as jasmine.SpyObj<HeroContextService>;
 
     fixture = TestBed.createComponent(AddHeroDialog);
     component = fixture.componentInstance;
@@ -50,15 +41,15 @@ describe(`${AddHeroDialog.name}`, () => {
 
   it("should validate form and call addHero on submit", () => {
     const heroData = { name: "Test", alias: "Alias", powerLevel: 50 };
-    component.heroForm.setValue(heroData);
-    spyOn(component, "closeDialog");
-    component.onSubmit();
-    expect(heroContextServiceSpy.addHero).toHaveBeenCalled();
-    expect(component.closeDialog).toHaveBeenCalled();
-  });
 
-  it("should close dialog on closeDialog()", () => {
-    component.closeDialog();
-    expect(matDialogRefSpy.close).toHaveBeenCalled();
+    component.heroForm.patchValue({
+      name: heroData.name,
+      alias: heroData.alias,
+      powerLevel: heroData.powerLevel,
+    });
+
+    expect(component.heroForm.valid).toBeTrue();
+    component.onSubmit();
+    expect(dialogRefSpy.close).toHaveBeenCalledWith(heroData);
   });
 });
