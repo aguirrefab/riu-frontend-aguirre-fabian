@@ -10,7 +10,6 @@ import { MatDialogRef } from "@angular/material/dialog";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { DialogContainer } from "@shared/components/dialog-container/dialog-container";
-import { HeroContextService } from "@src/app/features/home/services/hero-context/hero-context.service";
 import { InputUppercaseDirective } from "@src/app/shared/directives/input-uppercase.directive";
 
 @Component({
@@ -38,7 +37,6 @@ import { InputUppercaseDirective } from "@src/app/shared/directives/input-upperc
 export class AddHeroDialog {
   private readonly dialogRef = inject(MatDialogRef<AddHeroDialog>);
   private readonly fb = inject(FormBuilder);
-  private readonly heroContext = inject(HeroContextService);
 
   heroForm: FormGroup;
   heroName = signal<string>("");
@@ -60,12 +58,7 @@ export class AddHeroDialog {
 
   onSubmit(): void {
     if (this.heroForm.valid) {
-      this.heroContext.addHero(this.heroForm.value);
-      this.closeDialog();
+      this.dialogRef.close(this.heroForm.value);
     }
-  }
-
-  closeDialog(): void {
-    this.dialogRef.close();
   }
 }

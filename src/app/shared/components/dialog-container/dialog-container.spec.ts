@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { MatDialogRef } from "@angular/material/dialog";
 import { By } from "@angular/platform-browser";
 import { NoopAnimationsModule } from "@angular/platform-browser/animations";
 import { Hero } from "@shared/models/hero.model";
@@ -14,10 +15,12 @@ describe(`${DialogContainer.name}`, () => {
     alias: "Peter Parker",
     powerLevel: 85,
   };
+  const dialogRefSpy = jasmine.createSpyObj("MatDialogRef", ["close"]);
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [DialogContainer, NoopAnimationsModule],
+      providers: [{ provide: MatDialogRef, useValue: dialogRefSpy }],
     }).compileComponents();
 
     fixture = TestBed.createComponent(DialogContainer);
@@ -79,13 +82,12 @@ describe(`${DialogContainer.name}`, () => {
     expect(submitButton.nativeElement.disabled).toBeTrue();
   });
 
-  it("should emit closeDialog event when close button is clicked", () => {
-    const closeDialogSpy = spyOn(component.closeDialog, "emit");
+  it("should close dialog when close button is clicked", () => {
     const closeButton = fixture.debugElement.query(
       By.css('button[aria-label="Close modal"]'),
     );
     closeButton.nativeElement.click();
-    expect(closeDialogSpy).toHaveBeenCalled();
+    expect(dialogRefSpy.close).toHaveBeenCalled();
   });
 
   it("should emit submitDialog event with hero when submit button is clicked", () => {

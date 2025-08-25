@@ -1,9 +1,5 @@
 import { inject, Injectable } from "@angular/core";
-import {
-  MatDialog,
-  MatDialogConfig,
-  MatDialogRef,
-} from "@angular/material/dialog";
+import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import { HeroDialogDelete } from "@features/home/components/hero-dialog-delete/hero-dialog-delete";
 import { HeroDialogDetail } from "@features/home/components/hero-dialog-detail/hero-dialog-detail";
 import { HeroDialogEdit } from "@features/home/components/hero-dialog-edit/hero-dialog-edit";
@@ -28,27 +24,23 @@ export class HeroDialogService {
     return config;
   }
 
-  openDetail(hero: HeroDialogData) {
+  openDetailHero(hero: HeroDialogData) {
     const config = this.getBaseConfig(hero);
     return this.dialog.open(HeroDialogDetail, config);
   }
 
-  openEdit(hero: HeroDialogData) {
+  openEditHero(hero: HeroDialogData) {
     const config = this.getBaseConfig(hero);
     return this.dialog.open(HeroDialogEdit, config);
   }
 
-  openDelete(hero: HeroDialogData): MatDialogRef<HeroDialogDelete, boolean> {
+  openDeleteHero(hero: HeroDialogData) {
     const config = this.getBaseConfig(hero);
     return this.dialog.open(HeroDialogDelete, config);
   }
 
-  openAddHero(): MatDialogRef<AddHeroDialog, boolean> {
+  openAddHero() {
     const config = this.getBaseConfig();
     return this.dialog.open(AddHeroDialog, config);
-  }
-
-  close(): void {
-    this.dialog.closeAll();
   }
 }

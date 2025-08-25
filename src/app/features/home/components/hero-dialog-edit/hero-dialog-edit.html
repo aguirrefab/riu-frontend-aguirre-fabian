@@ -5,7 +5,6 @@
     [showSubmitButton]="true"
     submitLabel="Save"
     [submitDisabled]="!heroForm.valid"
-    (closeDialog)="closeDialog()"
     (submitDialog)="onSubmit()"
   >
     <form [formGroup]="heroForm">

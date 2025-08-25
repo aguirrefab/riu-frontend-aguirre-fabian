@@ -2,12 +2,12 @@ import { PercentPipe } from "@angular/common";
 import { provideHttpClient } from "@angular/common/http";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { MAT_DIALOG_DATA } from "@angular/material/dialog";
+import { HeroContextService } from "@services/hero-context/hero-context.service";
 import { DialogContainer } from "@shared/components/dialog-container/dialog-container";
-import { HeroDialogService } from "@src/app/features/home/services/hero-dialog/hero-dialog-service";
-import { HeroContextService } from "../../services/hero-context/hero-context.service";
+import { HeroDialogService } from "@src/app/core/services/hero-dialog/hero-dialog-service";
 import { HeroDialogDetail } from "./hero-dialog-detail";
 
-describe(HeroDialogDetail.name, () => {
+describe(`${HeroDialogDetail.name}`, () => {
   let component: HeroDialogDetail;
   let fixture: ComponentFixture<HeroDialogDetail>;
   let heroDialogService: jasmine.SpyObj<HeroDialogService>;
@@ -52,15 +52,5 @@ describe(HeroDialogDetail.name, () => {
     expect(component.data).toEqual(mockData);
     expect(component.data.hero.name).toContain(mockData.hero.name);
     expect(component.data.hero.alias).toContain(mockData.hero.alias);
-  });
-
-  it("should call close method of HeroDialogService when closeDialog is called", () => {
-    component.closeDialog();
-    expect(heroDialogService.close).toHaveBeenCalled();
-  });
-
-  it("should close dialog when closeDialog is called", () => {
-    component.closeDialog();
-    expect(heroDialogService.close).toHaveBeenCalled();
   });
 });
