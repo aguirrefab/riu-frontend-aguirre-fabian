@@ -36,7 +36,7 @@ describe(`${HeroDialogService.name}`, () => {
       matDialogSpy.open.and.returnValue(afterClosedSpy);
 
       const result = await firstValueFrom(
-        service.openDetail(heroData).afterClosed(),
+        service.openDetailHero(heroData).afterClosed(),
       );
 
       expect(matDialogSpy.open).toHaveBeenCalledWith(
@@ -63,7 +63,7 @@ describe(`${HeroDialogService.name}`, () => {
       matDialogSpy.open.and.returnValue(afterClosedSpy);
 
       const result = await firstValueFrom(
-        service.openDetail(heroData).afterClosed(),
+        service.openDetailHero(heroData).afterClosed(),
       );
 
       expect(result).toBeUndefined();
@@ -90,7 +90,7 @@ describe(`${HeroDialogService.name}`, () => {
       matDialogSpy.open.and.returnValue(afterClosedSpy);
 
       const result = await firstValueFrom(
-        service.openEdit(heroData).afterClosed(),
+        service.openEditHero(heroData).afterClosed(),
       );
 
       expect(matDialogSpy.open).toHaveBeenCalledWith(
@@ -117,15 +117,10 @@ describe(`${HeroDialogService.name}`, () => {
       matDialogSpy.open.and.returnValue(afterClosedSpy);
 
       const result = await firstValueFrom(
-        service.openEdit(heroData).afterClosed(),
+        service.openEditHero(heroData).afterClosed(),
       );
 
       expect(result).toBeUndefined();
     });
-  });
-
-  it("should close all dialogs", () => {
-    service.close();
-    expect(matDialogSpy.closeAll).toHaveBeenCalled();
   });
 });

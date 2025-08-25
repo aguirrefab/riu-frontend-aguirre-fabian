@@ -19,12 +19,7 @@ export class DialogContainer {
   submitDisabled = input<boolean>(false);
 
   hero = input<Hero>();
-  closeDialog = output<void>();
   submitDialog = output<Hero>();
-
-  onClose() {
-    this.closeDialog.emit();
-  }
 
   onSubmit() {
     this.submitDialog.emit(this.hero()!);

@@ -4,14 +4,12 @@ import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { DialogContainer } from "@shared/components/dialog-container/dialog-container";
 import { HeroDialogData } from "@shared/models/hero-dialog.model";
 import { Hero } from "@shared/models/hero.model";
-import { HeroContextService } from "@src/app/features/home/services/hero-context/hero-context.service";
 import { HeroDialogEdit } from "./hero-dialog-edit";
 
 describe(`${HeroDialogEdit.name}`, () => {
   let component: HeroDialogEdit;
   let fixture: ComponentFixture<HeroDialogEdit>;
   let dialogRef: jasmine.SpyObj<MatDialogRef<HeroDialogEdit>>;
-  let heroContextSpy: jasmine.SpyObj<HeroContextService>;
 
   const mockHero: Hero = {
     id: 1,
@@ -25,17 +23,17 @@ describe(`${HeroDialogEdit.name}`, () => {
     title: "Edit Hero: Superman",
   };
 
+  const dialogRefSpy = jasmine.createSpyObj("MatDialogRef", ["close"]);
+
   beforeEach(async () => {
     dialogRef = jasmine.createSpyObj("MatDialogRef", ["close"]);
-    heroContextSpy = jasmine.createSpyObj("HeroContextService", ["updateHero"]);
 
     await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, HeroDialogEdit, DialogContainer],
       providers: [
         FormBuilder,
-        { provide: MatDialogRef, useValue: dialogRef },
         { provide: MAT_DIALOG_DATA, useValue: mockDialogData },
-        { provide: HeroContextService, useValue: heroContextSpy },
+        { provide: MatDialogRef, useValue: dialogRefSpy },
       ],
     }).compileComponents();
 
@@ -96,25 +94,16 @@ describe(`${HeroDialogEdit.name}`, () => {
       alias: updatedHero.alias,
       powerLevel: updatedHero.powerLevel,
     });
-    const closeFn = spyOn(component, "closeDialog");
 
+    expect(component.heroForm.valid).toBeTrue();
     component.onSubmit();
-
-    expect(heroContextSpy.updateHero).toHaveBeenCalledWith(updatedHero);
-    expect(closeFn).toHaveBeenCalledWith();
+    expect(dialogRefSpy.close).toHaveBeenCalledWith(updatedHero);
   });
 
   it("should not update hero when form is invalid", () => {
     component.heroForm.get("name")?.setValue("");
     component.onSubmit();
 
-    expect(heroContextSpy.updateHero).not.toHaveBeenCalled();
     expect(dialogRef.close).not.toHaveBeenCalled();
-  });
-
-  it("should close dialog without updating when closeDialog is called", () => {
-    component.closeDialog();
-    expect(dialogRef.close).toHaveBeenCalled();
-    expect(heroContextSpy.updateHero).not.toHaveBeenCalled();
   });
 });

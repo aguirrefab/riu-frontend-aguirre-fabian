@@ -22,17 +22,17 @@
             color="primary"
             type="submit"
             aria-label="Add new hero"
-            (click)="openAddHeroDialog()"
+            (click)="addNewHero()"
           >
             <mat-label>Add new</mat-label>
             <mat-icon matSuffix>add</mat-icon>
           </button>
         </section>
       </div>
-      @if (pagedHeroes().length > 0) {
+      @if (heroes().length > 0) {
         <mat-card-content class="list-content">
           <div class="table-container">
-            <table mat-table [dataSource]="pagedHeroes()">
+            <table mat-table [dataSource]="heroes()">
               <!-- Name Column -->
               <ng-container matColumnDef="name">
                 <th mat-header-cell *matHeaderCellDef>Name</th>
@@ -107,11 +107,13 @@
             </table>
           </div>
           <mat-paginator
-            [length]="totalHeroes()"
-            [pageSize]="pageSize"
-            [pageIndex]="pageIndex"
+            [length]="results()"
+            [pageSize]="pageSize()"
+            [pageIndex]="pageIndex()"
             [pageSizeOptions]="[5, 10, 25, 100]"
             (page)="onPageChange($event)"
+            [disabled]="!heroes()"
+            [showFirstLastButtons]="true"
             aria-label="Select page"
           >
           </mat-paginator>
