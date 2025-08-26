@@ -83,9 +83,18 @@ describe(`${HeroContextService.name}`, () => {
 
   describe("updateHero", () => {
     it("should update an existing hero", () => {
-      const updatedHero = { ...mockHeroes[0], name: "CLARK KENT UPDATED" };
-      service.updateHero(updatedHero);
-      const result = service.getHeroById(1);
+      const newHero = {
+        name: "BARRY ALLEN",
+        alias: "Flash",
+        powerLevel: 85,
+      } as Hero;
+      service.addHero(newHero);
+      let hero = service.getHeroById(service.totalItems());
+      if (hero) {
+        hero.name = "CLARK KENT UPDATED";
+        service.updateHero(hero);
+      }
+      const result = service.getHeroById(4);
       expect(result?.name).toBe("CLARK KENT UPDATED");
     });
 
@@ -98,14 +107,14 @@ describe(`${HeroContextService.name}`, () => {
 
   describe("deleteHero", () => {
     it("should delete an existing hero", () => {
-      service.deleteHero(1, 0, 10);
+      service.deleteHero(1);
       const result = service.getHeroById(1);
       expect(result).toBeUndefined();
       expect(service.totalItems()).toBe(mockHeroes.length - 1);
     });
 
     it("should not modify heroes array if hero id does not exist", () => {
-      service.deleteHero(23, 0, 10);
+      service.deleteHero(23);
       expect(service.totalItems()).toBe(mockHeroes.length);
     });
   });
@@ -118,8 +127,9 @@ describe(`${HeroContextService.name}`, () => {
         powerLevel: 95,
       } as Hero;
       service.addHero(newHero);
-      expect(service.heroes().length).toBe(mockHeroes.length + 1);
-      const addedHero = service.heroes().find((h) => h.name === "DIANA PRINCE");
+      expect(service.totalItems()).toBe(mockHeroes.length + 1);
+
+      const addedHero = service.getHeroById(4);
       expect(addedHero).toBeDefined();
       expect(addedHero?.id).toBe(4);
     });

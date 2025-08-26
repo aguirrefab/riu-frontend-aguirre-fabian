@@ -114,6 +114,7 @@ export class HeroList implements OnInit {
       .subscribe((result?: Hero) => {
         if (result) {
           this.heroService.updateHero(result);
+          this.fetchHeroes();
         }
       });
   }
@@ -126,11 +127,8 @@ export class HeroList implements OnInit {
       .afterClosed()
       .subscribe((confirmed) => {
         if (confirmed) {
-          this.heroService.deleteHero(
-            hero.id,
-            this.pageIndex(),
-            this.pageSize(),
-          );
+          this.heroService.deleteHero(hero.id);
+
           const maxPageIndex = Math.max(
             0,
             Math.ceil(this.results() / this.pageSize()) - 1,
@@ -139,7 +137,6 @@ export class HeroList implements OnInit {
           if (this.pageIndex() > maxPageIndex) {
             this.pageIndex.set(maxPageIndex);
           }
-
           this.fetchHeroes();
         }
       });
