@@ -8,8 +8,8 @@ import { Hero } from "@shared/models/hero.model";
 })
 export class HeroContextService {
   private http = inject(HttpClient);
-  private _allHeroes = signal<Hero[]>([]); //simula todo el store
-  private _heroes = signal<Hero[]>([]);
+  private _allHeroes = signal<Hero[]>([]); // represneta el data store de registros
+  private _heroes = signal<Hero[]>([]); // representa el resutlado paginado por backend
 
   heroes = this._heroes.asReadonly();
   totalItems = computed(() => this._allHeroes().length);
@@ -38,40 +38,35 @@ export class HeroContextService {
   }
 
   getHeroById(id: number): Hero | undefined {
-    return this._heroes().find((hero) => hero.id === id);
+    return this._allHeroes().find((hero) => hero.id === id);
   }
 
   updateHero(hero: Hero): void {
-    const heroes = this._heroes();
+    const heroes = this._allHeroes();
     const index = heroes.findIndex((h) => h.id === hero.id);
-    if (index !== -1) {
-      heroes[index] = hero;
-      this._heroes.set([...heroes]);
+
+    if (index === -1) {
+      console.warn(`Hero with id ${hero.id} not found`);
+      return;
     }
+
+    heroes[index] = hero;
+    this._allHeroes.set([...heroes]);
   }
 
-  deleteHero(heroId: number, currentPage: number, pageSize: number): void {
+  deleteHero(heroId: number): void {
     const filteredHeroes = this._allHeroes().filter(
       (hero) => hero.id !== heroId,
     );
     this._allHeroes.set(filteredHeroes);
-
-    const lastPage = Math.floor((this.totalItems() - 1) / pageSize);
-    const newPage = Math.min(currentPage, lastPage);
-
-    this.getHeroes({
-      offset: newPage,
-      limit: pageSize,
-      searchBy: "",
-    });
   }
 
   addHero(hero: Hero): void {
-    const newId = this._heroes().length
-      ? Math.max(...this._heroes().map((h) => h.id)) + 1
+    const newId = this._allHeroes().length
+      ? Math.max(...this._allHeroes().map((h) => h.id)) + 1
       : 1;
     const newHero = { ...hero, id: newId };
-    this._heroes.set([...this._heroes(), newHero]);
-    this._allHeroes.set([...this._allHeroes(), newHero]);
+    const updatedAll = [...this._allHeroes(), newHero];
+    this._allHeroes.set(updatedAll);
   }
 }
