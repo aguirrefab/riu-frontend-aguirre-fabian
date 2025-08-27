@@ -1,0 +1,19 @@
+<app-dialog-container [showCloseButton]="false">
+  <mat-card-content>
+    <div class="error-container">
+      <mat-icon class="error-icon">error</mat-icon>
+      <h2>An error occurred</h2>
+      <p>Please try again</p>
+
+      <button
+        matButton="filled"
+        type="button"
+        (click)="onRetryAction()"
+        aria-label="Retry"
+        mat-dialog-close
+      >
+        Retry
+      </button>
+    </div>
+  </mat-card-content>
+</app-dialog-container>

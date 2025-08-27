@@ -2,6 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { computed, inject, Injectable, signal } from "@angular/core";
 import { HeroesRequest } from "@shared/interfaces/heroes-request.interface";
 import { Hero } from "@shared/models/hero.model";
+import { catchError, throwError } from "rxjs";
 
 @Injectable({
   providedIn: "root",
@@ -18,6 +19,13 @@ export class HeroContextService {
   loadDataForMockAPI(): void {
     this.http
       .get<{ heroes: Hero[] }>("assets/data/heroes.json")
+      .pipe(
+        catchError((err) => {
+          console.error("Error loading heroes:", err);
+          this._allHeroes.set([]);
+          return throwError(() => err);
+        }),
+      )
       .subscribe((data) => {
         this._allHeroes.set(data.heroes);
       });

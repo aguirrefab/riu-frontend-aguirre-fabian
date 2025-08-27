@@ -17,7 +17,6 @@ import { MatPaginatorModule, PageEvent } from "@angular/material/paginator";
 import { MatProgressBar } from "@angular/material/progress-bar";
 import { MatTableModule } from "@angular/material/table";
 import { MatTooltip } from "@angular/material/tooltip";
-import { RouterModule } from "@angular/router";
 import { HeroContextService } from "@services/hero-context/hero-context.service";
 import { HeroDialogService } from "@services/hero-dialog/hero-dialog-service";
 import { LoadingService } from "@services/loading/loading-service";
@@ -37,7 +36,6 @@ import { debounceTime, distinctUntilChanged } from "rxjs";
     MatPaginatorModule,
     MatProgressBar,
     ReactiveFormsModule,
-    RouterModule,
     PercentPipe,
     MatTooltip,
     MatButtonModule,
