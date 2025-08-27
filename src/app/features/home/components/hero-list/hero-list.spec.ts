@@ -92,6 +92,8 @@ describe(`${HeroList.name}`, () => {
       offset: 0,
       limit: component.pageSize(),
       searchBy: "",
+      sortOrder: "asc",
+      sortBy: "name",
     });
 
     const input = "superman";
@@ -102,6 +104,8 @@ describe(`${HeroList.name}`, () => {
       offset: 0,
       limit: component.pageSize(),
       searchBy: input,
+      sortBy: "name",
+      sortOrder: "asc",
     });
   }));
 
@@ -117,6 +121,8 @@ describe(`${HeroList.name}`, () => {
       offset: 0,
       limit: component.pageSize(),
       searchBy: "",
+      sortBy: "name",
+      sortOrder: "asc",
     });
   }));
 
