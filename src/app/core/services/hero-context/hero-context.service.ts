@@ -3,6 +3,7 @@ import { computed, inject, Injectable, signal } from "@angular/core";
 import { HeroesRequest } from "@shared/interfaces/heroes-request.interface";
 import { Hero } from "@shared/models/hero.model";
 import { catchError, throwError } from "rxjs";
+import { sortHeroes } from "../../../shared/utils/sort-heroes";
 
 @Injectable({
   providedIn: "root",
@@ -36,16 +37,25 @@ export class HeroContextService {
   }
 
   // método que simula ejecución de request a la api por queryParams
-  getHeroes(params: HeroesRequest): void {
+  getHeroes({
+    searchBy,
+    offset,
+    limit,
+    sortBy = "name",
+    sortOrder = "asc",
+  }: HeroesRequest): void {
     const filtered = this._allHeroes().filter(
       (hero) =>
-        hero.name.toLowerCase().includes(params.searchBy.toLowerCase()) ||
+        hero.name.toLowerCase().includes(searchBy.toLowerCase()) ||
         (hero.alias &&
-          hero.alias.toLowerCase().includes(params.searchBy.toLowerCase())),
+          hero.alias.toLowerCase().includes(searchBy.toLowerCase())),
     );
-    const start = params.offset * params.limit;
-    const end = start + params.limit;
-    const items = filtered.slice(start, end);
+
+    const sortedResults = sortHeroes(filtered, sortBy, sortOrder);
+
+    const start = offset * limit;
+    const end = start + limit;
+    const items = sortedResults.slice(start, end);
     this._heroes.set(items);
   }
 

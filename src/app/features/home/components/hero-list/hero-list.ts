@@ -1,14 +1,11 @@
-import { LiveAnnouncer } from "@angular/cdk/a11y";
 import { PercentPipe, UpperCasePipe } from "@angular/common";
 import {
-  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
   computed,
   inject,
   OnInit,
   signal,
-  ViewChild,
 } from "@angular/core";
 import { FormControl, ReactiveFormsModule } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
@@ -18,8 +15,8 @@ import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
 import { MatPaginatorModule, PageEvent } from "@angular/material/paginator";
 import { MatProgressBar } from "@angular/material/progress-bar";
-import { MatSort, MatSortModule, Sort } from "@angular/material/sort";
-import { MatTableDataSource, MatTableModule } from "@angular/material/table";
+import { MatSortModule, Sort } from "@angular/material/sort";
+import { MatTableModule } from "@angular/material/table";
 import { MatTooltip } from "@angular/material/tooltip";
 import { HeroContextService } from "@services/hero-context/hero-context.service";
 import { HeroDialogService } from "@services/hero-dialog/hero-dialog-service";
@@ -28,6 +25,8 @@ import { EmptyStateComponent } from "@shared/components/empty-state/empty-state"
 import { Loader } from "@shared/components/loader/loader";
 import { Hero } from "@shared/models/hero.model";
 import { debounceTime, distinctUntilChanged } from "rxjs";
+import { SortAction } from "../../../../shared/interfaces/sort-action.interface";
+import { SortType } from "../../../../shared/types/sort-by.type";
 
 @Component({
   selector: "app-hero-list",
@@ -53,30 +52,25 @@ import { debounceTime, distinctUntilChanged } from "rxjs";
   templateUrl: "./hero-list.html",
   styleUrl: "./hero-list.scss",
 })
-export class HeroList implements OnInit, AfterViewInit {
+export class HeroList implements OnInit {
   private heroService = inject(HeroContextService);
   private dialog = inject(HeroDialogService);
   private loadingService = inject(LoadingService);
-  private _liveAnnouncer = inject(LiveAnnouncer);
 
   isLoading = this.loadingService.isLoading();
   displayedColumns: string[] = ["name", "alias", "powerLevel", "actions"];
   searchControl = new FormControl("");
 
-  heroes = computed(() => new MatTableDataSource(this.heroService.heroes()));
+  heroes = computed(() => this.heroService.heroes());
   results = computed(() => this.heroService.totalItems());
-
-  // dataSource = new MatTableDataSource(this.heroes());
 
   pageSize = signal(10);
   pageIndex = signal(0);
   searchTerm = signal("");
-
-  @ViewChild(MatSort) sort!: MatSort;
-
-  ngAfterViewInit() {
-    this.heroes().sort = this.sort;
-  }
+  sortAction = signal<SortAction>({
+    column: "name",
+    sortOrder: "asc",
+  });
 
   ngOnInit(): void {
     this.fetchHeroes();
@@ -95,6 +89,8 @@ export class HeroList implements OnInit, AfterViewInit {
       offset: this.pageIndex(),
       limit: this.pageSize(),
       searchBy: this.searchTerm(),
+      sortOrder: this.sortAction().sortOrder,
+      sortBy: this.sortAction().column,
     });
   }
 
@@ -105,11 +101,13 @@ export class HeroList implements OnInit, AfterViewInit {
     this.fetchHeroes();
   }
 
-  announceSortChange(sortState: Sort) {
+  onSortChange(sortState: Sort) {
     if (sortState.direction) {
-      this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
-    } else {
-      this._liveAnnouncer.announce("Sorting cleared");
+      this.sortAction.set({
+        column: sortState.active as SortType,
+        sortOrder: sortState.direction,
+      });
+      this.fetchHeroes();
     }
   }
 

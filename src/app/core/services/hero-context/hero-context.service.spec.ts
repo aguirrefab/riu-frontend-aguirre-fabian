@@ -54,12 +54,12 @@ describe(`${HeroContextService.name}`, () => {
     it("should handle the results of heroes data paginated", () => {
       service.getHeroes({ searchBy: "", offset: 0, limit: 2 });
       expect(service.heroes().length).toBe(2);
-      expect(service.heroes()[0].name).toBe("Superman");
-      expect(service.heroes()[1].name).toBe("Batman");
+      expect(service.heroes()[0].name).toBe("Batman");
+      expect(service.heroes()[1].name).toBe("Robin");
 
       service.getHeroes({ searchBy: "", offset: 1, limit: 2 });
       expect(service.heroes().length).toBe(1);
-      expect(service.heroes()[0].name).toBe("Robin");
+      expect(service.heroes()[0].name).toBe("Superman");
     });
 
     it("should return empty when the hero don't exists", () => {
@@ -99,7 +99,11 @@ describe(`${HeroContextService.name}`, () => {
     });
 
     it("should not modify heroes array if hero id does not exist", () => {
-      const nonExistentHero = { id: 999, name: "NON EXISTENT", powerLevel: 50 };
+      const nonExistentHero = {
+        id: 999,
+        name: "NON EXISTENT",
+        powerLevel: 50,
+      };
       service.updateHero(nonExistentHero);
       expect(service.totalItems()).toBe(mockHeroes.length);
     });
