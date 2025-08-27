@@ -14,6 +14,7 @@ export class HeroContextService {
 
   heroes = this._heroes.asReadonly();
   totalItems = computed(() => this._allHeroes().length);
+  allHeroes = this._allHeroes.asReadonly();
 
   // simula carga de datos disponible en backend
   loadDataForMockAPI(): void {
@@ -27,7 +28,10 @@ export class HeroContextService {
         }),
       )
       .subscribe((data) => {
-        this._allHeroes.set(data.heroes);
+        const sortedHeroes = [...data.heroes].sort((a, b) =>
+          a.name.localeCompare(b.name),
+        );
+        this._allHeroes.set(sortedHeroes);
       });
   }
 
