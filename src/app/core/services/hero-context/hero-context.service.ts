@@ -18,7 +18,7 @@ export class HeroContextService {
   // simula carga de datos disponible en backend
   loadDataForMockAPI(): void {
     this.http
-      .get<{ heroes: Hero[] }>("assets/data/heroe.json")
+      .get<{ heroes: Hero[] }>("assets/data/heroes.json")
       .pipe(
         catchError((err) => {
           console.error("Error loading heroes:", err);
