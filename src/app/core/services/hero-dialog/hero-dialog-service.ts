@@ -1,10 +1,11 @@
 import { inject, Injectable } from "@angular/core";
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
+import { AddHeroDialog } from "@features/home/components/add-hero-dialog/add-hero-dialog";
 import { HeroDialogDelete } from "@features/home/components/hero-dialog-delete/hero-dialog-delete";
 import { HeroDialogDetail } from "@features/home/components/hero-dialog-detail/hero-dialog-detail";
 import { HeroDialogEdit } from "@features/home/components/hero-dialog-edit/hero-dialog-edit";
+import { ErrorDialog } from "@shared/components/error-dialog/error-dialog";
 import { HeroDialogData } from "@shared/models/hero-dialog.model";
-import { AddHeroDialog } from "@src/app/features/home/components/add-hero-dialog/add-hero-dialog";
 
 @Injectable({
   providedIn: "root",
@@ -42,5 +43,10 @@ export class HeroDialogService {
   openAddHero() {
     const config = this.getBaseConfig();
     return this.dialog.open(AddHeroDialog, config);
+  }
+
+  openErrorDialog() {
+    const config = this.getBaseConfig();
+    return this.dialog.open(ErrorDialog, config);
   }
 }

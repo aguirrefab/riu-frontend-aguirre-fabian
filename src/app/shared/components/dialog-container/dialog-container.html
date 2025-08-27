@@ -10,16 +10,17 @@
     </mat-card>
   </mat-dialog-content>
   <mat-dialog-actions align="end">
-    <button
-      matButton="text"
-      type="button"
-      matButton="tonal"
-      aria-label="Close modal"
-      mat-dialog-close
-    >
-      Close
-    </button>
-
+    @if (showCloseButton()) {
+      <button
+        matButton="text"
+        type="button"
+        matButton="tonal"
+        aria-label="Close modal"
+        mat-dialog-close
+      >
+        Close
+      </button>
+    }
     @if (showSubmitButton()) {
       <button
         matButton="filled"
@@ -27,6 +28,7 @@
         [disabled]="submitDisabled()"
         (click)="onSubmit()"
         aria-label="Submit modal"
+        mat-dialog-close
       >
         {{ submitLabel() }}
       </button>
