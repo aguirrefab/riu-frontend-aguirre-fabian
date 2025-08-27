@@ -15,6 +15,7 @@ import { Hero } from "@shared/models/hero.model";
 export class DialogContainer {
   title = input<string>();
   showSubmitButton = input<boolean>(false);
+  showCloseButton = input<boolean>(true);
   submitLabel = input<string>();
   submitDisabled = input<boolean>(false);
 

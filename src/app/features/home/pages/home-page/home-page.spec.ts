@@ -1,4 +1,4 @@
-import { HttpClientTestingModule } from "@angular/common/http/testing";
+import { provideHttpClient } from "@angular/common/http";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { HeroList } from "../../components/hero-list/hero-list";
 import { HomePage } from "./home-page";
@@ -9,7 +9,8 @@ describe(`${HomePage.name}`, () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, HeroList],
+      providers: [provideHttpClient()],
+      imports: [HeroList],
     }).compileComponents();
 
     fixture = TestBed.createComponent(HomePage);

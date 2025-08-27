@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.10.0] - 2025-08-27
+
+- feat: add new feature for sort heroes on the list
+
+## [0.9.0] - 2025-08-26
+
+- feat: add new generic error dialog component.
+
+## [0.8.1] - 2025-08-26
+
+- refactor: update methods for add, update or delete heroes on hero context service data.
+
 ## [0.8.0] - 2025-08-25
 
 - fix: manage pagination in the hero list component.

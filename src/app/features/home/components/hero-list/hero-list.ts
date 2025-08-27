@@ -15,9 +15,9 @@ import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
 import { MatPaginatorModule, PageEvent } from "@angular/material/paginator";
 import { MatProgressBar } from "@angular/material/progress-bar";
+import { MatSortModule, Sort } from "@angular/material/sort";
 import { MatTableModule } from "@angular/material/table";
 import { MatTooltip } from "@angular/material/tooltip";
-import { RouterModule } from "@angular/router";
 import { HeroContextService } from "@services/hero-context/hero-context.service";
 import { HeroDialogService } from "@services/hero-dialog/hero-dialog-service";
 import { LoadingService } from "@services/loading/loading-service";
@@ -25,6 +25,8 @@ import { EmptyStateComponent } from "@shared/components/empty-state/empty-state"
 import { Loader } from "@shared/components/loader/loader";
 import { Hero } from "@shared/models/hero.model";
 import { debounceTime, distinctUntilChanged } from "rxjs";
+import { SortAction } from "../../../../shared/interfaces/sort-action.interface";
+import { SortType } from "../../../../shared/types/sort-by.type";
 
 @Component({
   selector: "app-hero-list",
@@ -37,13 +39,13 @@ import { debounceTime, distinctUntilChanged } from "rxjs";
     MatPaginatorModule,
     MatProgressBar,
     ReactiveFormsModule,
-    RouterModule,
     PercentPipe,
     MatTooltip,
     MatButtonModule,
     UpperCasePipe,
     EmptyStateComponent,
     Loader,
+    MatSortModule,
   ],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -65,6 +67,10 @@ export class HeroList implements OnInit {
   pageSize = signal(10);
   pageIndex = signal(0);
   searchTerm = signal("");
+  sortAction = signal<SortAction>({
+    column: "name",
+    sortOrder: "asc",
+  });
 
   ngOnInit(): void {
     this.fetchHeroes();
@@ -83,6 +89,8 @@ export class HeroList implements OnInit {
       offset: this.pageIndex(),
       limit: this.pageSize(),
       searchBy: this.searchTerm(),
+      sortOrder: this.sortAction().sortOrder,
+      sortBy: this.sortAction().column,
     });
   }
 
@@ -91,6 +99,16 @@ export class HeroList implements OnInit {
     this.pageIndex.set(event.pageIndex);
 
     this.fetchHeroes();
+  }
+
+  onSortChange(sortState: Sort) {
+    if (sortState.direction) {
+      this.sortAction.set({
+        column: sortState.active as SortType,
+        sortOrder: sortState.direction,
+      });
+      this.fetchHeroes();
+    }
   }
 
   openHeroDetail(hero: Hero): void {
@@ -114,6 +132,7 @@ export class HeroList implements OnInit {
       .subscribe((result?: Hero) => {
         if (result) {
           this.heroService.updateHero(result);
+          this.fetchHeroes();
         }
       });
   }
@@ -126,11 +145,8 @@ export class HeroList implements OnInit {
       .afterClosed()
       .subscribe((confirmed) => {
         if (confirmed) {
-          this.heroService.deleteHero(
-            hero.id,
-            this.pageIndex(),
-            this.pageSize(),
-          );
+          this.heroService.deleteHero(hero.id);
+
           const maxPageIndex = Math.max(
             0,
             Math.ceil(this.results() / this.pageSize()) - 1,
@@ -139,7 +155,6 @@ export class HeroList implements OnInit {
           if (this.pageIndex() > maxPageIndex) {
             this.pageIndex.set(maxPageIndex);
           }
-
           this.fetchHeroes();
         }
       });

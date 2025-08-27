@@ -29,13 +29,25 @@
           </button>
         </section>
       </div>
-      @if (heroes().length > 0) {
+      @if (results() > 0) {
         <mat-card-content class="list-content">
           <div class="table-container">
-            <table mat-table [dataSource]="heroes()">
+            <table
+              mat-table
+              [dataSource]="heroes()"
+              matSort
+              (matSortChange)="onSortChange($event)"
+            >
               <!-- Name Column -->
               <ng-container matColumnDef="name">
-                <th mat-header-cell *matHeaderCellDef>Name</th>
+                <th
+                  mat-header-cell
+                  *matHeaderCellDef
+                  mat-sort-header="name"
+                  sortActionDescription="Sort by hero name"
+                >
+                  Name
+                </th>
                 <td mat-cell *matCellDef="let hero">
                   {{ hero.name | uppercase }}
                 </td>
@@ -43,13 +55,27 @@
 
               <!-- Alias Column -->
               <ng-container matColumnDef="alias">
-                <th mat-header-cell *matHeaderCellDef>Alias</th>
+                <th
+                  mat-header-cell
+                  *matHeaderCellDef
+                  mat-sort-header="alias"
+                  sortActionDescription="Sort by hero alias"
+                >
+                  Alias
+                </th>
                 <td mat-cell *matCellDef="let hero">{{ hero.alias || "-" }}</td>
               </ng-container>
 
               <!-- Power Level Column -->
               <ng-container matColumnDef="powerLevel">
-                <th mat-header-cell *matHeaderCellDef>Power Level</th>
+                <th
+                  mat-header-cell
+                  *matHeaderCellDef
+                  mat-sort-header="powerLevel"
+                  sortActionDescription="Sort by hero power"
+                >
+                  Power Level
+                </th>
                 <td mat-cell *matCellDef="let hero">
                   <mat-progress-bar
                     mode="determinate"
